@@ -6,13 +6,20 @@ import { useFrame } from '@react-three/fiber';
 function Chris() {
   const meshRef = useRef();
   const { direction } = useDirectionContext();
+  const lastTimestampRef = useRef(0);
 
+  console.log(Axis);
   useEffect(() => {
     const joystickMoveHandler = (event) => {
       if (meshRef.current) {
         const { x, y } = event.position;
-        meshRef.current.position.x += x * 0.1;
-        meshRef.current.position.z -= y * 0.1;
+
+        const currentTime = performance.now();
+        const delta = (currentTime - lastTimestampRef.current) / 1000;
+        lastTimestampRef.current = currentTime;
+
+        meshRef.current.position.x += x * 10 * delta;
+        meshRef.current.position.z -= y * 10 * delta;
       }
     };
 
@@ -26,8 +33,8 @@ function Chris() {
   // useFrame((_, delta) => {
   //   if (meshRef.current) {
   //     const { x, y } = direction;
-  //     meshRef.current.position.x += x * 0.1;
-  //     meshRef.current.position.z -= y * 0.1;
+  //     meshRef.current.position.x += x * 10 * delta;
+  //     meshRef.current.position.z -= y * 10 * delta;
   //   }
   // });
 
