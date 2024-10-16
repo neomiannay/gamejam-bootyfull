@@ -1,0 +1,60 @@
+/* stylelint-disable color-no-hex */
+/* stylelint-disable custom-property-empty-line-before */
+
+@mixin variables {
+    /* UNITS */
+    --vw: 100vw;
+    --vh: 100vh;
+    --ivh: 100vh;
+    --rem: 16px;
+
+    /* COLORS */
+    --color-bg-body: #000;
+
+    --color-neutral-0: #100301;
+    --color-neutral-20: #605856;
+    --color-neutral-40: #ae9e9c;
+    --color-neutral-50: #d1c6c5;
+    --color-neutral-60: #dfd7d6;
+    --color-neutral-80: #f4f1f0;
+    --color-neutral-100: #ffffff;
+
+    /* SHORTCUTS */
+    --color-background: var(--color-bg-body);
+    --color-main: var(--color-content-main);
+
+    /* SIZES */
+    --padding: #{rem(20)};
+    --padding-y: #{rem(120)};
+
+    /* GRID */
+    --line-height: #{rem(62)};
+    --grid-gutter: var(--padding);
+    --grid-column: #{computeGridColumn(12, true)};
+
+    /* NOTIFICATION */
+    --notification-height: 0px;
+    --notification-offset: 0px;
+
+    @include tablet-portrait {
+        --subheader-height: #{rem(50)};
+
+        --small-border-radius: #{rem(3)};
+        --large-header-height: #{rem(72)};
+        --small-header-height: #{rem(54)};
+
+        /* SIZES */
+        --padding: #{rem(20)};
+
+        /* GRID */
+        --grid-column: #{computeGridColumn(4, true)};
+    }
+}
+
+$width-reference: 1440;
+$width-reference-m: 375;
+$rem-reference: 16px;
+
+/* EXPORT */
+@value widthReference: #{$width-reference};
+@value widthReferenceM: #{$width-reference-m};

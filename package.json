@@ -1,0 +1,33 @@
+{
+  "name": "gamejam-bootyfull",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.99.0",
+    "@react-three/fiber": "^8.15.16",
+    "@react-three/postprocessing": "^2.16.0",
+    "@types/three": "^0.161.2",
+    "axis-api": "github:gobelins-axis/axis-api",
+    "classnames": "^2.5.1",
+    "postprocessing": "^6.35.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "5.0.1",
+    "three": "^0.161.0",
+    "three-stdlib": "^2.29.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.57",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react-swc": "^3.6.0",
+    "leva": "^0.9.35",
+    "r3f-perf": "^7.1.2",
+    "sass": "^1.71.1",
+    "vite": "^5.1.3"
+  }
+}

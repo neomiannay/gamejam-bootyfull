@@ -1,0 +1,36 @@
+@mixin rule() {
+    &-desktop {
+        @content;
+    }
+    & {
+        @content;
+    }
+}
+
+@mixin mobile-rule() {
+    &-mobile {
+        @include tablet-portrait {
+            @content;
+        }
+    }
+    & {
+        @include tablet-portrait {
+            @content;
+        }
+    }
+}
+
+.default {
+    @include rule {
+        // font-family: $sans-font;
+        font-size: rem(13);
+        line-height: 120%;
+        text-transform: none;
+        font-weight: normal;
+    }
+
+    @include mobile-rule {
+        font-size: rem(14);
+        line-height: 100%;
+    }
+}
