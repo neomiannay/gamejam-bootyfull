@@ -1,10 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 let context = {};
 const GameStateContext = React.createContext();
 
 export function GameStateProvider({ children }) {
-  context = {};
+  const [score, setScore] = useState(0);
+
+  context = {
+    score,
+    setScore,
+  };
 
   return <GameStateContext.Provider value={context}>{children}</GameStateContext.Provider>;
 }

@@ -2,18 +2,21 @@ import React, { useEffect, useRef, useState } from 'react';
 import Axis from 'axis-api';
 import { useFrame } from '@react-three/fiber';
 import { clamp } from 'lodash';
+import * as THREE from 'three';
 import { useWaveShooter } from './WaveShooter';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { missyBounds } from '../utils/constants';
+import { useGameStateContext } from '../provider/GameStateProvider';
 
 function Missy() {
   const meshRef = useRef(null);
-  const { player2, missyPosition, setMissyPosition, setChrisRotation } = useDirectionContext();
+  const { player2, missyPosition, setMissyPosition, setChrisRotation, chrisPosition } = useDirectionContext();
   const [isRotating, setIsRotation] = useState(false);
   const [accumulatedRotation, setAccumulatedRotation] = useState(0);
+  const [target, setTarget] = useState([]);
 
   const boundsWaves = { z: 10 };
-  const { waves, shootWave } = useWaveShooter(boundsWaves);
+  const { waves, shootWave, checkCollisions } = useWaveShooter(boundsWaves);
 
   useEffect(() => {
     const joystickMoveHandler = (event) => {
@@ -41,6 +44,15 @@ function Missy() {
       }
     };
 
+    setTarget({
+      id: 1,
+      position: new THREE.Vector3(chrisPosition.x, 0.0, chrisPosition.z),
+      boundingBox: new THREE.Box3().setFromCenterAndSize(
+        { x: chrisPosition.x, y: 0, z: chrisPosition.z },
+        new THREE.Vector3(3, 1, 1)
+      ),
+    });
+
     Axis.joystick2.addEventListener('joystick:move', joystickMoveHandler);
     player2.addEventListener('keydown', handleKeyDown);
     player2.addEventListener('keyup', handleKeyUp);
@@ -51,6 +63,10 @@ function Missy() {
       player2.removeEventListener('keyup', handleKeyUp);
     };
   }, []);
+
+  useFrame((_, delta) => {
+    checkCollisions(target);
+  });
 
   useFrame((state, delta) => {
     const { x: xMissy } = missyPosition;
@@ -107,6 +123,14 @@ function Missy() {
   //     meshRef.current.position.y = clampedY;
   //   }
   // });
+
+  // const { x } = event.position;
+  // const currentTime = performance.now();
+  // const delta = (currentTime - lastTimestampRef.current) / 1000;
+  // lastTimestampRef.current = currentTime;
+  // meshRef.current.position.x += x * 10 * delta;
+  // const clampedX = clamp(meshRef.current.position.x, -missyBounds, missyBounds);
+  // meshRef.current.position.x = clampedX;
 
   return (
     <>

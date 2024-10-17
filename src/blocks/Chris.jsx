@@ -41,8 +41,8 @@ function Chris() {
       /*
        ** joystick movment
        */
-      // meshRef.current.position.x += rotatedX * 10 * delta;
-      // meshRef.current.position.z -= rotatedY * 10 * delta;
+      meshRef.current.position.x += rotatedX * 10 * delta;
+      meshRef.current.position.z -= rotatedY * 10 * delta;
       /*
        ** END joystick movment
        */
