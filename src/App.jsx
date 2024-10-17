@@ -6,12 +6,14 @@ import Chris from './blocks/Chris';
 
 import { Perf } from 'r3f-perf';
 import Missy from './blocks/Missy';
+import UI from './components/ui/UI';
 
 function Scene() {
   return (
     <>
       <Leva />
       <Loader />
+      {/* <UI /> */}
       <Canvas className="canvas" shadows camera={{ position: [0, 10, 10] }}>
         <Perf position="bottom-right" />
         <color attach="background" args={['#e8c5b9']} />

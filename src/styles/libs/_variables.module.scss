@@ -9,6 +9,7 @@
     --rem: 16px;
 
     /* COLORS */
+    --color-white: #fff;
     --color-bg-body: #000;
 
     --color-neutral-0: #100301;
@@ -21,7 +22,7 @@
 
     /* SHORTCUTS */
     --color-background: var(--color-bg-body);
-    --color-main: var(--color-content-main);
+    --color-main: var(--color-white);
 
     /* SIZES */
     --padding: #{rem(20)};
@@ -35,6 +36,9 @@
     /* NOTIFICATION */
     --notification-height: 0px;
     --notification-offset: 0px;
+
+    --width-reference: 1440;
+    --width-reference-m: 375;
 
     @include tablet-portrait {
         --subheader-height: #{rem(50)};

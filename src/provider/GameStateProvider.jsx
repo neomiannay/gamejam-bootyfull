@@ -1,10 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { GAME_PHASES } from '../utils/constants';
 
 let context = {};
 const GameStateContext = React.createContext();
 
 export function GameStateProvider({ children }) {
-  context = {};
+  const [currentPhase, setCurrentPhase] = useState(GAME_PHASES.MENU);
+
+  context = {
+    currentPhase,
+    setCurrentPhase,
+  };
 
   return <GameStateContext.Provider value={context}>{children}</GameStateContext.Provider>;
 }

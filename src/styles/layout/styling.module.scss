@@ -23,14 +23,13 @@
 .default {
     @include rule {
         // font-family: $sans-font;
-        font-size: rem(13);
-        line-height: 120%;
+        font-size: rem(55);
         text-transform: none;
         font-weight: normal;
     }
 
     @include mobile-rule {
-        font-size: rem(14);
+        font-size: rem(30);
         line-height: 100%;
     }
 }

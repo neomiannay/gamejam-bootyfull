@@ -1,0 +1,19 @@
+.wrapper {
+    position: relative;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+}
+
+.iconContainer {
+    padding: 0 rem(20);
+}
+
+.underline {
+    position: absolute;
+    bottom: rem(-15);
+    left: 0;
+    width: 100% !important;
+}
