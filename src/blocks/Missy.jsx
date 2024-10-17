@@ -2,21 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import Axis from 'axis-api';
 import { useFrame } from '@react-three/fiber';
 import { clamp } from 'lodash';
-import * as THREE from 'three';
-import { useWaveShooter } from './WaveShooter';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { missyBounds } from '../utils/constants';
 import { useGameStateContext } from '../provider/GameStateProvider';
 
 function Missy() {
   const meshRef = useRef(null);
-  const { player2, missyPosition, setMissyPosition, setChrisRotation, chrisPosition } = useDirectionContext();
+  const { direction, player2, missyPosition, setMissyPosition, setChrisRotation, setMissyMeshPosition } =
+    useDirectionContext();
+  const { missyScore } = useGameStateContext();
   const [isRotating, setIsRotation] = useState(false);
   const [accumulatedRotation, setAccumulatedRotation] = useState(0);
-  const [target, setTarget] = useState([]);
-
-  const boundsWaves = { z: 10 };
-  const { waves, shootWave, checkCollisions } = useWaveShooter(boundsWaves);
 
   useEffect(() => {
     const joystickMoveHandler = (event) => {
@@ -28,14 +24,6 @@ function Missy() {
       if (event.key === 'x') {
         setIsRotation(true);
       }
-
-      if (meshRef.current && event.key === 'a') {
-        shootWave({
-          x: meshRef.current.position.x,
-          y: meshRef.current.position.y,
-          z: meshRef.current.position.z,
-        });
-      }
     };
 
     const handleKeyUp = (event) => {
@@ -43,15 +31,6 @@ function Missy() {
         setIsRotation(false);
       }
     };
-
-    setTarget({
-      id: 1,
-      position: new THREE.Vector3(chrisPosition.x, 0.0, chrisPosition.z),
-      boundingBox: new THREE.Box3().setFromCenterAndSize(
-        { x: chrisPosition.x, y: 0, z: chrisPosition.z },
-        new THREE.Vector3(3, 1, 1)
-      ),
-    });
 
     Axis.joystick2.addEventListener('joystick:move', joystickMoveHandler);
     player2.addEventListener('keydown', handleKeyDown);
@@ -64,10 +43,6 @@ function Missy() {
     };
   }, []);
 
-  useFrame((_, delta) => {
-    checkCollisions(target);
-  });
-
   useFrame((state, delta) => {
     const { x: xMissy } = missyPosition;
 
@@ -75,6 +50,7 @@ function Missy() {
       const computedX = meshRef.current.position.x;
       const clampedX = clamp(computedX + xMissy * 10 * delta, -missyBounds, missyBounds);
       meshRef.current.position.x = clampedX;
+      setMissyMeshPosition(meshRef.current.position);
     }
 
     const joystickRotationValue = xMissy;
@@ -85,6 +61,15 @@ function Missy() {
       const angleRotation = accumulatedRotation;
       setChrisRotation(angleRotation);
     }
+
+    const { x: xKB, y: yKB } = direction;
+    const computedX = meshRef.current.position.x;
+    const clampedX = clamp(computedX + xKB * 10 * delta, -missyBounds, missyBounds);
+
+    meshRef.current.position.x = clampedX;
+    meshRef.current.position.z -= yKB * 10 * delta;
+
+    console.log('MISSY SCORE ', missyScore);
   });
 
   // useEffect(() => {
@@ -138,12 +123,6 @@ function Missy() {
         <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color="blue" />
       </mesh>
-      {waves.map((wave, index) => (
-        <mesh key={index} position={[wave.x, wave.y, wave.z]}>
-          <sphereGeometry args={[0.2, 32, 32]} />
-          <meshStandardMaterial color="red" />
-        </mesh>
-      ))}
     </>
   );
 }

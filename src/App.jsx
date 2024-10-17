@@ -7,6 +7,8 @@ import Chris from './blocks/Chris';
 import { Perf } from 'r3f-perf';
 import Missy from './blocks/Missy';
 import UI from './components/ui/UI';
+import Waves from './blocks/Waves';
+import Cottons from './blocks/Cottons';
 
 function Scene() {
   return (
@@ -49,6 +51,10 @@ function Scene() {
 
           <Missy />
           <Chris />
+
+          <Waves />
+
+          <Cottons />
         </Suspense>
       </Canvas>
     </>

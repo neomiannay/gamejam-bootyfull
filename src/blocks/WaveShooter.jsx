@@ -2,16 +2,24 @@ import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useGameStateContext } from '../provider/GameStateProvider';
+import { useDirectionContext } from '../provider/DirectionProvider';
 
 export function useWaveShooter(bounds) {
-  const { setScore } = useGameStateContext();
+  // Get the target position from the direction provider
+  const { chrisMeshPosition } = useDirectionContext();
+  // Get the score from the game state provider
+  const { setMissyScore } = useGameStateContext();
 
+  // Initialize the waves and the time of the next wave
   const [waves, setWaves] = useState([]);
   const nextWaveTimeRef = useRef(0);
+  // Speed and delay of the waves
   const speed = 10;
   const waveDelay = 500;
+  // Damage of the waves
   const damage = 1;
 
+  // Shoot a wave from the current position
   const shootWave = (position) => {
     const now = performance.now();
     if (now - nextWaveTimeRef.current > waveDelay) {
@@ -30,6 +38,7 @@ export function useWaveShooter(bounds) {
     }
   };
 
+  // Update the waves' positions
   const updateWaves = (delta) => {
     setWaves((prevWaves) =>
       prevWaves
@@ -48,26 +57,45 @@ export function useWaveShooter(bounds) {
     );
   };
 
-  const checkCollisions = (target) => {
+  // Create the target object
+  const target = {
+    id: 1,
+    position: new THREE.Vector3(chrisMeshPosition.x, 0.0, chrisMeshPosition.z),
+    boundingBox: new THREE.Box3().setFromCenterAndSize(
+      new THREE.Vector3(chrisMeshPosition.x, 0, chrisMeshPosition.z),
+      new THREE.Vector3(3, 1, 1) // Size of the target's bounding box
+    ),
+  };
+
+  // Check for collisions between the waves and the target
+  const checkCollisions = () => {
     let collisions = [];
     setWaves((prevWaves) =>
       prevWaves.map((wave) => {
         if (!wave.hasCollided && wave.boundingBox.intersectsBox(target.boundingBox)) {
           collisions.push({ target, wave });
           target.health -= wave.damage;
-          setScore((prevScore) => prevScore + 1);
-          return { ...wave, hasCollided: true };
+          setMissyScore((prevScore) => prevScore + 1);
+          return {
+            ...wave,
+            hasCollided: true,
+          };
         }
         return wave;
       })
     );
+
+    // remove collided waves
+    setWaves((prevWaves) => prevWaves.filter((wave) => !wave.hasCollided));
     return collisions;
   };
 
+  // Update the waves in each frame
   useFrame((state, delta) => {
     updateWaves(delta);
   });
 
+  // Return the waves, shootWave and checkCollisions
   return {
     waves,
     shootWave,

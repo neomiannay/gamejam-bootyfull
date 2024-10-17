@@ -5,10 +5,13 @@ import { Html } from '@react-three/drei';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { missyBounds } from '../utils/constants';
 import { clamp } from 'lodash';
+import { useGameStateContext } from '../provider/GameStateProvider';
 
 function Chris() {
   const meshRef = useRef();
-  const { direction, player1, chrisPosition, chrisRotation, setChrisPosition } = useDirectionContext();
+  const { direction, player1, chrisPosition, chrisRotation, setChrisPosition, setChrisMeshPosition } =
+    useDirectionContext();
+  const { chrisScore } = useGameStateContext();
 
   useEffect(() => {
     const joystickMoveHandler = (event) => {
@@ -41,8 +44,16 @@ function Chris() {
       /*
        ** joystick movment
        */
-      meshRef.current.position.x += rotatedX * 10 * delta;
-      meshRef.current.position.z -= rotatedY * 10 * delta;
+      const computedX = meshRef.current.position.x;
+      const clampedX = clamp(computedX + rotatedX * 10 * delta, -missyBounds, missyBounds);
+      meshRef.current.position.x = clampedX;
+
+      const computedZ = meshRef.current.position.z;
+      const clampedZ = clamp(computedZ - rotatedY * 10 * delta, -missyBounds, missyBounds);
+      meshRef.current.position.z = clampedZ;
+
+      setChrisMeshPosition(meshRef.current.position);
+
       /*
        ** END joystick movment
        */
@@ -50,12 +61,12 @@ function Chris() {
       /*
        ** keyboard movment
        */
-      const { x: xKB, y: yKB } = direction;
-      const computedX = meshRef.current.position.x;
-      const clampedX = clamp(computedX + xKB * 10 * delta, -missyBounds, missyBounds);
+      // const { x: xKB, y: yKB } = direction;
+      // const computedX = meshRef.current.position.x;
+      // const clampedX = clamp(computedX + xKB * 10 * delta, -missyBounds, missyBounds);
 
-      meshRef.current.position.x = clampedX;
-      meshRef.current.position.z -= yKB * 10 * delta;
+      // meshRef.current.position.x = clampedX;
+      // meshRef.current.position.z -= yKB * 10 * delta;
       /*
        ** END keyboard movment
        */
