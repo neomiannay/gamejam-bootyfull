@@ -15,8 +15,8 @@ function UI({ className, ...props }) {
   return (
     <div className={classNames(styles.wrapper, className)}>
       <img className={styles.border} src={linkBorder} />
-      {currentPhase === GAME_PHASES.MENU && <Menu />}
-      {currentPhase === GAME_PHASES.PLAYER_SELECT && <PlayerSelection />}
+      {/* {currentPhase === GAME_PHASES.MENU && <Menu />} */}
+      {currentPhase === GAME_PHASES.MENU && <PlayerSelection />}
     </div>
   );
 }

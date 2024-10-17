@@ -45,6 +45,7 @@ export function DirectionProvider({ children }) {
   const player1 = Axis.createPlayer({
     id: 1,
     joysticks: Axis.joystick1,
+    buttons: Axis.buttonManager.getButtonsById(1),
   });
 
   const player2 = Axis.createPlayer({
