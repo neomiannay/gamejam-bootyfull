@@ -17,9 +17,18 @@ export function DirectionProvider({ children }) {
   Axis.joystick1.setGamepadEmulatorJoystick(gamepadEmulator1, 0);
   Axis.joystick2.setGamepadEmulatorJoystick(gamepadEmulator2, 0);
 
+  const buttonsPlayer1 = [
+    Axis.registerKeys('z', 'i', 1),
+    Axis.registerKeys('s', 's', 1),
+    Axis.registerKeys('w', 'w', 1),
+    Axis.registerKeys('a', 'a', 1),
+    Axis.registerKeys('d', 'x', 1),
+  ];
+
   const player1 = Axis.createPlayer({
     id: 1,
     joysticks: Axis.joystick1,
+    buttons: buttonsPlayer1,
   });
 
   const player2 = Axis.createPlayer({
@@ -48,6 +57,8 @@ export function DirectionProvider({ children }) {
           break;
         case 'ArrowRight': // Rotate Right
           setRotation((prev) => (prev + 10) % 360); // Increase rotation by 10 degrees
+        case 'a': // Left
+          setDirection((prev) => ({ ...prev, x: -1 }));
           break;
         default:
           break;

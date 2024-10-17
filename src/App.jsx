@@ -1,10 +1,11 @@
-import { Grid, Loader, OrbitControls } from '@react-three/drei';
+import { Grid, Loader, OrbitControls, Plane } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Leva } from 'leva';
 import React, { Suspense } from 'react';
 import Chris from './blocks/Chris';
 
 import { Perf } from 'r3f-perf';
+import Missy from './blocks/Missy';
 
 function Scene() {
   return (
@@ -32,6 +33,19 @@ function Scene() {
             infiniteGrid
           />
 
+          <Plane args={[40, 10]} rotation={[0, -Math.PI / 2, 0]} position={[5, 5, -8]}>
+            <meshStandardMaterial color="green" side={2} />
+          </Plane>
+
+          <Plane args={[40, 10]} rotation={[0, -Math.PI / 2, 0]} position={[-5, 5, -8]}>
+            <meshStandardMaterial color="green" side={2} />
+          </Plane>
+
+          <Plane args={[40, 40]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+            <meshStandardMaterial color="black" side={2} />
+          </Plane>
+
+          <Missy />
           <Chris />
         </Suspense>
       </Canvas>
