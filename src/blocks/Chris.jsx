@@ -3,70 +3,63 @@ import Axis from 'axis-api';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import { useDirectionContext } from '../provider/DirectionProvider';
+import { missyBounds } from '../utils/constants';
+import { clamp } from 'lodash';
 
 function Chris() {
   const meshRef = useRef();
-  const { player2 } = useDirectionContext();
-  const joystick1ValuesRef = useRef({ x: 0, y: 0 });
-  const joystick2ValuesRef = useRef({ x: 0 });
-  const [isMKeyPressed, setIsMKeyPressed] = useState(false);
-  const [accumulatedRotation, setAccumulatedRotation] = useState(0);
+  const { direction, player1, chrisPosition, chrisRotation, setChrisPosition } = useDirectionContext();
 
   useEffect(() => {
     const joystickMoveHandler = (event) => {
       const { x, y } = event.position;
-      joystick1ValuesRef.current = { x, y };
-    };
-
-    const joystickRotationHandler = (event) => {
-      const { x } = event.position;
-      joystick2ValuesRef.current = { x };
-    };
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'x') {
-        setIsMKeyPressed(true);
-      }
-    };
-
-    const handleKeyUp = (event) => {
-      if (event.key === 'x') {
-        setIsMKeyPressed(false);
-      }
+      setChrisPosition({ x, z: y });
     };
 
     Axis.joystick1.addEventListener('joystick:move', joystickMoveHandler);
-    Axis.joystick2.addEventListener('joystick:move', joystickRotationHandler);
-    player2.addEventListener('keydown', handleKeyDown);
-    player2.addEventListener('keyup', handleKeyUp);
 
     return () => {
       Axis.joystick1.removeEventListener('joystick:move', joystickMoveHandler);
-      Axis.joystick2.removeEventListener('joystick:move', joystickRotationHandler);
-      player2.removeEventListener('keydown', handleKeyDown);
-      // player2.removeEventListener('keyup', handleKeyUp);
     };
   }, []);
 
   useFrame((state, delta) => {
     if (meshRef.current) {
-      const { x, y } = joystick1ValuesRef.current;
-      const joystickRotationValue = joystick2ValuesRef.current.x;
-
-      if (isMKeyPressed) {
-        // Incrémente ou décrémente la rotation accumulée en fonction de la valeur du joystick
-        setAccumulatedRotation((prevRotation) => prevRotation + joystickRotationValue * delta * 3);
-      }
-
-      const angleRotation = accumulatedRotation;
+      const { x, z } = chrisPosition;
+      const angleRotation = chrisRotation;
       const cosAngle = Math.cos(angleRotation);
       const sinAngle = Math.sin(angleRotation);
 
-      const rotatedX = x * cosAngle - y * sinAngle;
-      const rotatedY = x * sinAngle + y * cosAngle;
+      const rotatedX = x * cosAngle - z * sinAngle;
+      const rotatedY = x * sinAngle + z * cosAngle;
 
-      meshRef.current.position.x += rotatedX * 10 * delta;
-      meshRef.current.position.z -= rotatedY * 10 * delta;
+      setChrisPosition((prev) => ({
+        x: prev.x + rotatedX * 10 * delta,
+        z: prev.z - rotatedY * 10 * delta,
+      }));
+
+      /*
+       ** joystick movment
+       */
+      // meshRef.current.position.x += rotatedX * 10 * delta;
+      // meshRef.current.position.z -= rotatedY * 10 * delta;
+      /*
+       ** END joystick movment
+       */
+
+      /*
+       ** keyboard movment
+       */
+      const { x: xKB, y: yKB } = direction;
+      const computedX = meshRef.current.position.x;
+      const clampedX = clamp(computedX + xKB * 10 * delta, -missyBounds, missyBounds);
+
+      meshRef.current.position.x = clampedX;
+      meshRef.current.position.z -= yKB * 10 * delta;
+      /*
+       ** END keyboard movment
+       */
+
       meshRef.current.rotation.y = angleRotation;
     }
   });
@@ -75,7 +68,7 @@ function Chris() {
     <>
       <Html>
         <div>
-          <h1>{accumulatedRotation.toFixed(2)}</h1>
+          <h1>{chrisRotation.toFixed(2)}</h1>
         </div>
       </Html>
 

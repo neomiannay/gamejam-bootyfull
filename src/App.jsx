@@ -13,7 +13,7 @@ function Scene() {
       <Leva />
       <Loader />
       <Canvas className="canvas" shadows camera={{ position: [0, 10, 10] }}>
-        <Perf position="top-left" />
+        <Perf position="bottom-right" />
         <color attach="background" args={['#e8c5b9']} />
         <Suspense fallback={null}>
           <ambientLight intensity={1} />
@@ -41,7 +41,7 @@ function Scene() {
             <meshStandardMaterial color="green" side={2} />
           </Plane>
 
-          <Plane args={[40, 40]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+          <Plane args={[40, 40]} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]}>
             <meshStandardMaterial color="black" side={2} />
           </Plane>
 
