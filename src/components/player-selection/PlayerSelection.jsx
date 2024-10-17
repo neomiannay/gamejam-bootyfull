@@ -8,6 +8,8 @@ import PlayerCursor from '../playerCursor/PlayerCursor';
 import { useDirectionContext } from '../../provider/DirectionProvider';
 import { useGameStateContext } from '../../provider/GameStateProvider';
 import { GAME_PHASES } from '../../utils/constants';
+import { baseVariants, pageTransition } from '../../core/animation';
+import { motion } from 'framer-motion';
 
 function PlayerSelection({ className, ...props }) {
   const [selectedPlayer1, setSelectedPlayer1] = useState('Missy');
@@ -72,7 +74,7 @@ function PlayerSelection({ className, ...props }) {
   );
 
   return (
-    <div className={classNames(styles.wrapper, className)} {...props}>
+    <motion.div className={classNames(styles.wrapper, className)} {...baseVariants} {...pageTransition} {...props}>
       <h1 className={styles.title}>Sélectionnez vos personnages</h1>
       <div className={styles.playersWrapper}>
         {renderPlayer('Missy', selectedPlayer1, selectedPlayer2, 'p1_outline')}
@@ -85,7 +87,7 @@ function PlayerSelection({ className, ...props }) {
         icon={<Icons id="axis_a" fill={isSelectionValid ? '#ffffff' : '#ae9e9c'} />}
         underlineColor={isSelectionValid ? '#ffffff' : '#ae9e9c'}
       />
-    </div>
+    </motion.div>
   );
 }
 

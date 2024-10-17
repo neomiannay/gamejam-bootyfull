@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import styles from './Intro.module.scss';
 import classNames from 'classnames';
+import { motion } from 'framer-motion';
 
 import { useDirectionContext } from '../../provider/DirectionProvider';
 import { useGameStateContext } from '../../provider/GameStateProvider';
 
 import { GAME_PHASES } from '../../utils/constants';
+import { baseVariants, pageTransition } from '../../core/animation';
 
 function Intro({ className, ...props }) {
   const { player1, player2 } = useDirectionContext();
@@ -31,7 +33,7 @@ function Intro({ className, ...props }) {
   };
 
   return (
-    <div className={classNames(styles.wrapper, className)} {...props}>
+    <motion.div className={classNames(styles.wrapper, className)} {...baseVariants} {...pageTransition} {...props}>
       <video
         className={styles.video}
         src="/video/intro-compressed.mp4"
@@ -40,7 +42,7 @@ function Intro({ className, ...props }) {
         onEnded={handleVideoEnd}
         loop={false}
       />
-    </div>
+    </motion.div>
   );
 }
 

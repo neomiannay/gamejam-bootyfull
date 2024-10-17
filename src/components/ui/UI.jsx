@@ -7,6 +7,7 @@ import { useGameStateContext } from '../../provider/GameStateProvider';
 import { GAME_PHASES } from '../../utils/constants';
 import PlayerSelection from '../player-selection/PlayerSelection';
 import Intro from '../intro/Intro';
+import { AnimatePresence } from 'framer-motion';
 
 function UI({ className, ...props }) {
   const { currentPhase } = useGameStateContext();
@@ -26,9 +27,11 @@ function UI({ className, ...props }) {
       })}
     >
       <img className={styles.border} src={linkBorder} />
-      {currentPhase === GAME_PHASES.MENU && <Menu />}
-      {currentPhase === GAME_PHASES.PLAYER_SELECT && <PlayerSelection />}
-      {currentPhase === GAME_PHASES.INTRO && <Intro />}
+      <AnimatePresence>
+        {currentPhase === GAME_PHASES.MENU && <Menu />}
+        {currentPhase === GAME_PHASES.PLAYER_SELECT && <PlayerSelection />}
+        {currentPhase === GAME_PHASES.INTRO && <Intro />}
+      </AnimatePresence>
     </div>
   );
 }

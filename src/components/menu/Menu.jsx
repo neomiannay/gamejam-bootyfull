@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 import { GAME_PHASES } from '../../utils/constants';
 import Icons from '../icons/Icons';
 import UnderLineText from '../underline-text/UnderLineText';
+import { motion } from 'framer-motion';
+import { baseVariants, pageTransition } from '../../core/animation';
 
 function Menu({ className, ...props }) {
   const { setCurrentPhase } = useGameStateContext();
@@ -28,7 +30,7 @@ function Menu({ className, ...props }) {
   }, []);
 
   return (
-    <div className={classNames(styles.wrapper, className)}>
+    <motion.div className={classNames(styles.wrapper, className)} {...baseVariants} {...pageTransition}>
       <img className={styles.img} src={linkLogo} alt="logo" />
 
       <UnderLineText
@@ -38,7 +40,7 @@ function Menu({ className, ...props }) {
         icon={<Icons id="axis_a" />}
         underlineColor="#ffffff"
       />
-    </div>
+    </motion.div>
   );
 }
 
