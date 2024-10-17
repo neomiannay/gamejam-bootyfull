@@ -1,48 +1,87 @@
-import React, { useEffect, useRef } from 'react';
-import { useDirectionContext } from '../provider/DirectionProvider';
+import React, { useEffect, useRef, useState } from 'react';
 import Axis from 'axis-api';
 import { useFrame } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
 
 function Chris() {
   const meshRef = useRef();
-  const { direction } = useDirectionContext();
-  const lastTimestampRef = useRef(0);
+  const joystick1ValuesRef = useRef({ x: 0, y: 0 });
+  const joystick2ValuesRef = useRef({ x: 0 });
+  const [isMKeyPressed, setIsMKeyPressed] = useState(false);
+  const [accumulatedRotation, setAccumulatedRotation] = useState(0);
 
-  console.log(Axis);
   useEffect(() => {
     const joystickMoveHandler = (event) => {
-      if (meshRef.current) {
-        const { x, y } = event.position;
+      const { x, y } = event.position;
+      joystick1ValuesRef.current = { x, y };
+    };
 
-        const currentTime = performance.now();
-        const delta = (currentTime - lastTimestampRef.current) / 1000;
-        lastTimestampRef.current = currentTime;
+    const joystickRotationHandler = (event) => {
+      const { x } = event.position;
+      joystick2ValuesRef.current = { x };
+    };
 
-        meshRef.current.position.x += x * 10 * delta;
-        meshRef.current.position.z -= y * 10 * delta;
+    const handleKeyDown = (event) => {
+      if (event.key === 'm' || event.key === 'M') {
+        setIsMKeyPressed(true);
       }
     };
 
+    const handleKeyUp = (event) => {
+      if (event.key === 'm' || event.key === 'M') {
+        setIsMKeyPressed(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
     Axis.joystick1.addEventListener('joystick:move', joystickMoveHandler);
+    Axis.joystick2.addEventListener('joystick:move', joystickRotationHandler);
 
     return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
       Axis.joystick1.removeEventListener('joystick:move', joystickMoveHandler);
+      Axis.joystick2.removeEventListener('joystick:move', joystickRotationHandler);
     };
   }, []);
 
-  // useFrame((_, delta) => {
-  //   if (meshRef.current) {
-  //     const { x, y } = direction;
-  //     meshRef.current.position.x += x * 10 * delta;
-  //     meshRef.current.position.z -= y * 10 * delta;
-  //   }
-  // });
+  useFrame((state, delta) => {
+    if (meshRef.current) {
+      const { x, y } = joystick1ValuesRef.current;
+      const joystickRotationValue = joystick2ValuesRef.current.x;
+
+      if (isMKeyPressed) {
+        // Incrémente ou décrémente la rotation accumulée en fonction de la valeur du joystick
+        setAccumulatedRotation((prevRotation) => prevRotation + joystickRotationValue * delta * 3);
+      }
+
+      const angleRotation = accumulatedRotation;
+      const cosAngle = Math.cos(angleRotation);
+      const sinAngle = Math.sin(angleRotation);
+
+      const rotatedX = x * cosAngle - y * sinAngle;
+      const rotatedY = x * sinAngle + y * cosAngle;
+
+      meshRef.current.position.x += rotatedX * 10 * delta;
+      meshRef.current.position.z -= rotatedY * 10 * delta;
+      meshRef.current.rotation.y = angleRotation;
+    }
+  });
 
   return (
-    <mesh ref={meshRef} position={[0, 0, 0]}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="hotpink" />
-    </mesh>
+    <>
+      <Html>
+        <div>
+          <h1>{accumulatedRotation.toFixed(2)}</h1>
+        </div>
+      </Html>
+
+      <mesh ref={meshRef} position={[0, 0, 0]}>
+        <boxGeometry args={[3, 1, 1]} />
+        <meshStandardMaterial color="hotpink" />
+      </mesh>
+    </>
   );
 }
 

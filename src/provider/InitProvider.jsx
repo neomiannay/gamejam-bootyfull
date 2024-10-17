@@ -5,10 +5,11 @@ let context = {};
 export const InitContext = createContext();
 
 export function InitProvider({ children }) {
-  const { gamepadEmulator } = useDirectionContext();
+  const { gamepadEmulator1, gamepadEmulator2 } = useDirectionContext();
 
   const update = () => {
-    gamepadEmulator.update();
+    gamepadEmulator1.update();
+    gamepadEmulator2.update();
     requestAnimationFrame(update);
   };
 
@@ -18,7 +19,7 @@ export function InitProvider({ children }) {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [gamepadEmulator]);
+  }, [gamepadEmulator1, gamepadEmulator2]);
 
   context = {};
 

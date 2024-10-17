@@ -6,21 +6,23 @@ const DirectionContext = createContext();
 
 export function DirectionProvider({ children }) {
   const [direction, setDirection] = useState({ x: 0, y: 0 });
+  const [rotation, setRotation] = useState(0);
 
-  const gamepadEmulator = Axis.createGamepadEmulator(0);
-  Axis.joystick1.setGamepadEmulatorJoystick(gamepadEmulator, 0);
+  const gamepadEmulator1 = Axis.createGamepadEmulator(0);
+  const gamepadEmulator2 = Axis.createGamepadEmulator(1);
 
-  // Axis.registerGamepadEmulatorKeys(gamepadEmulator, 1, 'a', 1);
-  // Axis.registerGamepadEmulatorKeys(gamepadEmulator, 0, 'x', 1);
-  // Axis.registerGamepadEmulatorKeys(gamepadEmulator, 2, 'i', 1);
-  // Axis.registerGamepadEmulatorKeys(gamepadEmulator, 3, 's', 1);
+  Axis.joystick1.setGamepadEmulatorJoystick(gamepadEmulator1, 0);
+  Axis.joystick2.setGamepadEmulatorJoystick(gamepadEmulator2, 0);
 
   const player1 = Axis.createPlayer({
     id: 1,
     joysticks: Axis.joystick1,
   });
 
-  // Axis.joystick1
+  const player2 = Axis.createPlayer({
+    id: 2,
+    joysticks: Axis.joystick2,
+  });
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -36,6 +38,12 @@ export function DirectionProvider({ children }) {
           break;
         case 'd': // Right
           setDirection((prev) => ({ ...prev, x: 1 }));
+          break;
+        case 'ArrowLeft': // Rotate Left
+          setRotation((prev) => (prev - 10 + 360) % 360); // Decrease rotation by 10 degrees
+          break;
+        case 'ArrowRight': // Rotate Right
+          setRotation((prev) => (prev + 10) % 360); // Increase rotation by 10 degrees
           break;
         default:
           break;
@@ -73,8 +81,11 @@ export function DirectionProvider({ children }) {
 
   context = {
     direction: normalizedDirection,
+    rotation,
     player1,
-    gamepadEmulator,
+    player2,
+    gamepadEmulator1,
+    gamepadEmulator2,
   };
 
   return <DirectionContext.Provider value={context}>{children}</DirectionContext.Provider>;
