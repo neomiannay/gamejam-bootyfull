@@ -20,10 +20,21 @@
     margin: 0 auto;
 
     .player {
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
+
+        .playerCursor {
+            position: absolute;
+            top: rem(-80);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            gap: rem(20);
+        }
     }
 
     .playerImg img {
@@ -41,4 +52,8 @@
     margin: 0 auto;
     margin-bottom: calc(130 / var(--width-reference) * 100vw);
     color: var(--color-neutral-40);
+
+    &.valid {
+        color: var(--color-main);
+    }
 }

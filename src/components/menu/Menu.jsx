@@ -13,8 +13,8 @@ function Menu({ className, ...props }) {
 
   const linkLogo = '/images/logo.svg';
 
-  const changePhase = () => {
-    setCurrentPhase(GAME_PHASES.PLAYER_SELECT);
+  const changePhase = (event) => {
+    if (event.key === 'a') setCurrentPhase(GAME_PHASES.PLAYER_SELECT);
   };
 
   useEffect(() => {
