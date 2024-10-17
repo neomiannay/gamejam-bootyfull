@@ -68,8 +68,6 @@ function Missy() {
 
     meshRef.current.position.x = clampedX;
     meshRef.current.position.z -= yKB * 10 * delta;
-
-    console.log('MISSY SCORE ', missyScore);
   });
 
   // useEffect(() => {

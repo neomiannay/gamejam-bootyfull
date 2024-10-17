@@ -15,7 +15,6 @@ function Waves() {
   // Listen for keydown events and shoot a wave when certain keys are pressed
   useEffect(() => {
     const handleKeyDown = (event) => {
-      console.log(event.key);
       if (missyMeshPosition && (event.key === 'a' || event.key === 'w')) {
         shootWave({
           x: missyMeshPosition.x,

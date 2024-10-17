@@ -12,6 +12,9 @@ function Cottons() {
   // State to store cotton positions and bounding boxes
   const [cottons, setCottons] = useState([]);
 
+  // Cottons bounds
+  const boundsCottons = { z: 10 };
+
   // Function to spawn a new cotton
   const spawnCotton = () => {
     const newCotton = {
@@ -48,28 +51,27 @@ function Cottons() {
 
   // Update the position of each cotton and check for collisions
   useFrame((state, delta) => {
-    setCottons(
-      (prevCottons) =>
-        prevCottons
-          .map((cotton) => {
-            if (cotton.length < 1) return;
-            // Update the cotton's position
-            cotton.z += 10 * delta;
-            cotton.boundingBox.setFromCenterAndSize(
-              new THREE.Vector3(cotton.x, cotton.y, cotton.z),
-              new THREE.Vector3(0.5, 0.5, 0.5)
-            );
+    setCottons((prevCottons) =>
+      prevCottons
+        .map((cotton) => {
+          if (cotton.length < 1) return;
+          // Update the cotton's position
+          cotton.z += 10 * delta;
+          cotton.boundingBox.setFromCenterAndSize(
+            new THREE.Vector3(cotton.x, cotton.y, cotton.z),
+            new THREE.Vector3(0.5, 0.5, 0.5)
+          );
 
-            // Check for collisions
-            if (cotton.boundingBox.intersectsBox(target.boundingBox) && !cotton.hasCollided) {
-              console.log('Collided with cotton');
-              setChrisScore((prevScore) => prevScore + 1);
-              cotton.hasCollided = true; // Mark as collided
-            }
+          // Check for collisions
+          if (cotton.boundingBox.intersectsBox(target.boundingBox) && !cotton.hasCollided) {
+            setChrisScore((prevScore) => prevScore + 1);
+            cotton.hasCollided = true; // Mark as collided
+          }
 
-            return cotton;
-          })
-          .filter((cotton) => !cotton.hasCollided) // Remove cottons that have passed z = 10 or collided
+          return cotton;
+        })
+        .filter((cotton) => !cotton.hasCollided) // Remove cottons that have passed z = 10 or collided
+        .filter((cotton) => cotton.z < boundsCottons.z)
     );
   });
 
