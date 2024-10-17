@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import Axis from 'axis-api';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
+import { useDirectionContext } from '../provider/DirectionProvider';
 
 function Chris() {
   const meshRef = useRef();
+  const { player2 } = useDirectionContext();
   const joystick1ValuesRef = useRef({ x: 0, y: 0 });
   const joystick2ValuesRef = useRef({ x: 0 });
   const [isMKeyPressed, setIsMKeyPressed] = useState(false);
@@ -22,27 +24,27 @@ function Chris() {
     };
 
     const handleKeyDown = (event) => {
-      if (event.key === 'm' || event.key === 'M') {
+      if (event.key === 'x') {
         setIsMKeyPressed(true);
       }
     };
 
     const handleKeyUp = (event) => {
-      if (event.key === 'm' || event.key === 'M') {
+      if (event.key === 'x') {
         setIsMKeyPressed(false);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
     Axis.joystick1.addEventListener('joystick:move', joystickMoveHandler);
     Axis.joystick2.addEventListener('joystick:move', joystickRotationHandler);
+    player2.addEventListener('keydown', handleKeyDown);
+    player2.addEventListener('keyup', handleKeyUp);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
       Axis.joystick1.removeEventListener('joystick:move', joystickMoveHandler);
       Axis.joystick2.removeEventListener('joystick:move', joystickRotationHandler);
+      player2.removeEventListener('keydown', handleKeyDown);
+      // player2.removeEventListener('keyup', handleKeyUp);
     };
   }, []);
 

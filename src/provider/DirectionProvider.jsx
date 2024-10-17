@@ -11,6 +11,9 @@ export function DirectionProvider({ children }) {
   const gamepadEmulator1 = Axis.createGamepadEmulator(0);
   const gamepadEmulator2 = Axis.createGamepadEmulator(1);
 
+  Axis.registerKeys('o', 'a', 2);
+  Axis.registerKeys('p', 'x', 2);
+
   Axis.joystick1.setGamepadEmulatorJoystick(gamepadEmulator1, 0);
   Axis.joystick2.setGamepadEmulatorJoystick(gamepadEmulator2, 0);
 
@@ -22,6 +25,7 @@ export function DirectionProvider({ children }) {
   const player2 = Axis.createPlayer({
     id: 2,
     joysticks: Axis.joystick2,
+    buttons: Axis.buttonManager.getButtonsById(2),
   });
 
   useEffect(() => {
