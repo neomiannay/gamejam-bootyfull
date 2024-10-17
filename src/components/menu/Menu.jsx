@@ -36,6 +36,7 @@ function Menu({ className, ...props }) {
         text1="Appuyer sur"
         text2="pour continuer"
         icon={<Icons id="axis_a" />}
+        underlineColor="#ffffff"
       />
     </div>
   );
