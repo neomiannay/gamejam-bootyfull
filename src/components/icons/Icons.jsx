@@ -56,12 +56,24 @@ const P2Outline = ({ fill = '#ffffff', ...props }) => {
   );
 };
 
+const PlayerCursor = ({ fill = '#ffffff', ...props }) => {
+  return (
+    <svg width="19" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path
+        d="M15.9 1.1a15.6 15.6 0 0 1-6 2.5h-.5c-3-.5-8.9-4.6-8-1 .7 3.1 3.1 7 6.1 8.5 3 1.5 5.5 7.3 6.9 7.5 2.1.4 3.8-14 3.5-15.5-.4-1.6-1.4-2.6-2-2Z"
+        fill={fill}
+      />
+    </svg>
+  );
+};
+
 const icons = {
   border_basic: BorderBasic,
   axis_a: AxisA,
   underline: Underline,
   p1_outline: P1Outline,
   p2_outline: P2Outline,
+  player_cursor: PlayerCursor,
 };
 
 // type IconsProps = {

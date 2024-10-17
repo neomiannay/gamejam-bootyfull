@@ -7,6 +7,7 @@ function PlayerCursor({ className, player, outline }) {
     <div className={classNames(styles.wrapper, className)}>
       <Icons id={outline} />
       <span>{player}</span>
+      <Icons className={styles.cursor} id="player_cursor" />
     </div>
   );
 }

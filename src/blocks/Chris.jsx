@@ -1,30 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Axis from 'axis-api';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { missyBounds } from '../utils/constants';
 import { clamp } from 'lodash';
-import { useGameStateContext } from '../provider/GameStateProvider';
 
 function Chris() {
   const meshRef = useRef();
-  const { direction, player1, chrisPosition, chrisRotation, setChrisPosition, setChrisMeshPosition } =
+  const { chrisPosition, chrisRotation, setChrisPosition, setChrisMeshPosition, controlledByPlayer } =
     useDirectionContext();
-  const { chrisScore } = useGameStateContext();
 
   useEffect(() => {
+    const joystick = controlledByPlayer === 2 ? Axis.joystick2 : Axis.joystick1;
     const joystickMoveHandler = (event) => {
       const { x, y } = event.position;
       setChrisPosition({ x, z: y });
     };
 
-    Axis.joystick1.addEventListener('joystick:move', joystickMoveHandler);
+    joystick.addEventListener('joystick:move', joystickMoveHandler);
 
     return () => {
-      Axis.joystick1.removeEventListener('joystick:move', joystickMoveHandler);
+      joystick.removeEventListener('joystick:move', joystickMoveHandler);
     };
-  }, []);
+  }, [controlledByPlayer, setChrisPosition]);
 
   useFrame((state, delta) => {
     if (meshRef.current) {
@@ -41,9 +40,6 @@ function Chris() {
         z: prev.z - rotatedY * 10 * delta,
       }));
 
-      /*
-       ** joystick movment
-       */
       const computedX = meshRef.current.position.x;
       const clampedX = clamp(computedX + rotatedX * 10 * delta, -missyBounds, missyBounds);
       meshRef.current.position.x = clampedX;
@@ -53,24 +49,6 @@ function Chris() {
       meshRef.current.position.z = clampedZ;
 
       setChrisMeshPosition(meshRef.current.position);
-
-      /*
-       ** END joystick movment
-       */
-
-      /*
-       ** keyboard movment
-       */
-      // const { x: xKB, y: yKB } = direction;
-      // const computedX = meshRef.current.position.x;
-      // const clampedX = clamp(computedX + xKB * 10 * delta, -missyBounds, missyBounds);
-
-      // meshRef.current.position.x = clampedX;
-      // meshRef.current.position.z -= yKB * 10 * delta;
-      /*
-       ** END keyboard movment
-       */
-
       meshRef.current.rotation.y = angleRotation;
     }
   });

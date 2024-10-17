@@ -1,29 +1,36 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import styles from './PlayerSelection.module.scss';
 import UnderLineText from '../underline-text/UnderLineText';
 import Icons from '../icons/Icons';
 import Axis from 'axis-api';
 import PlayerCursor from '../playerCursor/PlayerCursor';
+import { useDirectionContext } from '../../provider/DirectionProvider';
+import { useGameStateContext } from '../../provider/GameStateProvider';
+import { GAME_PHASES } from '../../utils/constants';
 
 function PlayerSelection({ className, ...props }) {
   const [selectedPlayer1, setSelectedPlayer1] = useState('Missy');
-  const [selectedPlayer2, setSelectedPlayer2] = useState('Missy');
-  const joystickThreshold = 0.5; // Threshold to change character selection
+  const [selectedPlayer2, setSelectedPlayer2] = useState('Chris');
+  const joystickThreshold = 0.5;
 
-  const handleJoystickMove = useCallback(
-    (setSelectedPlayer) => (event) => {
-      const joystickX = event.position.x;
+  const { player1, player2 } = useDirectionContext();
+  const { setCurrentPhase } = useGameStateContext();
 
-      // Only change character if the joystick is moved significantly left or right
-      if (joystickX < -joystickThreshold) {
-        setSelectedPlayer('Missy');
-      } else if (joystickX > joystickThreshold) {
-        setSelectedPlayer('Chris');
-      }
-    },
-    []
-  );
+  const handleJoystickMove = (setSelectedPlayer) => (event) => {
+    // not working correctly
+    const { x } = event.position;
+
+    if (Math.abs(x) > joystickThreshold) {
+      setSelectedPlayer((prev) => {
+        if (x < joystickThreshold) {
+          return 'Missy';
+        } else if (x > -joystickThreshold) {
+          return 'Chris';
+        }
+      });
+    }
+  };
 
   useEffect(() => {
     const joystick1Handler = handleJoystickMove(setSelectedPlayer1);
@@ -31,14 +38,25 @@ function PlayerSelection({ className, ...props }) {
 
     Axis.joystick1.addEventListener('joystick:move', joystick1Handler);
     Axis.joystick2.addEventListener('joystick:move', joystick2Handler);
+    player1.addEventListener('keydown', handleButtonPress);
+    player2.addEventListener('keydown', handleButtonPress);
 
     return () => {
       Axis.joystick1.removeEventListener('joystick:move', joystick1Handler);
       Axis.joystick2.removeEventListener('joystick:move', joystick2Handler);
+      player1.removeEventListener('keydown', handleButtonPress);
+      player2.removeEventListener('keydown', handleButtonPress);
     };
-  }, [handleJoystickMove]);
+  }, []);
 
   const isSelectionValid = useMemo(() => selectedPlayer1 !== selectedPlayer2, [selectedPlayer1, selectedPlayer2]);
+
+  const handleButtonPress = (event) => {
+    if (event.key === 'a' && selectedPlayer1 !== selectedPlayer2) {
+      console.log('createPlayers', selectedPlayer1, selectedPlayer2);
+      setCurrentPhase(GAME_PHASES.INTRO);
+    }
+  };
 
   const renderPlayer = (player, selectedPlayer, opponentPlayer, cursorOutline) => (
     <div className={styles.player}>
@@ -71,4 +89,4 @@ function PlayerSelection({ className, ...props }) {
   );
 }
 
-export default PlayerSelection;
+export default React.memo(PlayerSelection);

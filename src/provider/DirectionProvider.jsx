@@ -11,6 +11,8 @@ export function DirectionProvider({ children }) {
   const [chrisMeshPosition, setChrisMeshPosition] = useState({ x: 0, z: 0 });
   const [missyPosition, setMissyPosition] = useState({ x: 0 });
   const [missyMeshPosition, setMissyMeshPosition] = useState({ x: 0 });
+  const [controlledByPlayer, setControlledByPlayer] = useState(1); // Nouveau: qui contrôle Chris (1 ou 2)
+
   const [rotation, setRotation] = useState(0);
 
   const gamepadEmulator1 = Axis.createGamepadEmulator(0);
@@ -21,7 +23,7 @@ export function DirectionProvider({ children }) {
   Axis.registerKeys('w', 'w', 2);
 
   Axis.joystick1.setGamepadEmulatorJoystick(gamepadEmulator1, 0);
-  Axis.joystick2.setGamepadEmulatorJoystick(gamepadEmulator2, 0);
+  Axis.joystick2.setGamepadEmulatorJoystick(gamepadEmulator1, 1);
 
   const buttonsPlayer1 = [
     Axis.registerKeys('z', 'i', 1),
@@ -128,6 +130,8 @@ export function DirectionProvider({ children }) {
     setMissyPosition,
     missyMeshPosition,
     setMissyMeshPosition,
+    controlledByPlayer,
+    setControlledByPlayer,
   };
 
   return <DirectionContext.Provider value={context}>{children}</DirectionContext.Provider>;
