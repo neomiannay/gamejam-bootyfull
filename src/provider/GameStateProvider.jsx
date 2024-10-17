@@ -6,10 +6,13 @@ const GameStateContext = React.createContext();
 
 export function GameStateProvider({ children }) {
   const [currentPhase, setCurrentPhase] = useState(GAME_PHASES.MENU);
+  const [score, setScore] = useState(0);
 
   context = {
     currentPhase,
     setCurrentPhase,
+    score,
+    setScore
   };
 
   return <GameStateContext.Provider value={context}>{children}</GameStateContext.Provider>;

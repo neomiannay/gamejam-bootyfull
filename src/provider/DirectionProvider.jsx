@@ -20,6 +20,25 @@ export function DirectionProvider({ children }) {
   Axis.joystick1.setGamepadEmulatorJoystick(gamepadEmulator1, 0);
   Axis.joystick2.setGamepadEmulatorJoystick(gamepadEmulator2, 0);
 
+  const buttonsPlayer1 = [
+    Axis.registerKeys('z', 'i', 1),
+    Axis.registerKeys('s', 's', 1),
+    Axis.registerKeys('w', 'w', 1),
+    Axis.registerKeys('a', 'a', 1),
+    Axis.registerKeys('d', 'x', 1),
+  ];
+
+  // manette a = 0, b = 1, y = 2, x = 3
+  Axis.registerGamepadEmulatorKeys(gamepadEmulator1, 0, 'a', 1); // Gamepad button index 0 (PS4 X) to button "a" from group 1
+  Axis.registerGamepadEmulatorKeys(gamepadEmulator1, 1, 'x', 1); // Gamepad button index 1 (PS4 Square) to button "x" from group 1
+  Axis.registerGamepadEmulatorKeys(gamepadEmulator1, 2, 'i', 1); // Gamepad button index 2 (PS4 Circle) to button "i" from group 1
+  Axis.registerGamepadEmulatorKeys(gamepadEmulator1, 3, 's', 1); // Gamepad button index 3 (PS4 Triangle) to button "s" from group 1
+
+  Axis.registerGamepadEmulatorKeys(gamepadEmulator2, 0, 'a', 2); // Gamepad button index 0 (PS4 X) to button "a" from group 1
+  Axis.registerGamepadEmulatorKeys(gamepadEmulator2, 1, 'x', 2); // Gamepad button index 1 (PS4 Square) to button "x" from group 1
+  Axis.registerGamepadEmulatorKeys(gamepadEmulator2, 2, 'i', 2); // Gamepad button index 2 (PS4 Circle) to button "i" from group 1
+  Axis.registerGamepadEmulatorKeys(gamepadEmulator2, 3, 's', 2);
+
   const player1 = Axis.createPlayer({
     id: 1,
     joysticks: Axis.joystick1,
