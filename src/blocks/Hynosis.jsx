@@ -1,5 +1,5 @@
 import React from 'react';
-import { VideoTexture } from 'three';
+import { VideoTexture, DoubleSide } from 'three';
 
 function Hynosis() {
   const video = document.createElement('video');
@@ -16,7 +16,7 @@ function Hynosis() {
   return (
     <mesh position={[0, 4, -12]} scale={[0.2, 0.1, 1]}>
       <planeGeometry args={[100, 100]} />
-      <meshBasicMaterial map={texture} side={THREE.DoubleSide} />
+      <meshBasicMaterial map={texture} side={DoubleSide} />
     </mesh>
   );
 }
