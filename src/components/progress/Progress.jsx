@@ -7,15 +7,13 @@ import { baseVariants, pageTransition } from '../../core/animation';
 import Icons from '../icons/Icons';
 
 function ProgressBar({ className, ...props }) {
-  const { chrisScore, missyScore } = useGameStateContext();
+  const { chrisScore, missyScore, maxPossibleScore } = useGameStateContext();
   const ref = useRef(null);
 
   // Calculate the progress based on chrisScore and missyScore
   const progressValue = useMemo(() => {
     const totalScore = chrisScore + missyScore;
     if (totalScore === 0) return 0.5; // Start at the middle if no score
-
-    const maxPossibleScore = 10;
 
     const chrisProgress = chrisScore / maxPossibleScore;
     const missyProgress = missyScore / maxPossibleScore;
@@ -49,13 +47,13 @@ function ProgressBar({ className, ...props }) {
       {...pageTransition}
     >
       <div className={classNames(styles.wrapperProgress, className)}>
-        <Icons id="chris_initial" />
+        <Icons id="missy_initial" />
         <div className={styles.progress}>
           <div className={classNames(styles.motif, className)}>
             <ProgressMotif />
           </div>
         </div>
-        <Icons id="missy_initial" />
+        <Icons id="chris_initial" />
       </div>
     </motion.div>
   );

@@ -38,7 +38,6 @@ function Intro({ className, ...props }) {
         className={styles.video}
         src="/video/intro-compressed.mp4"
         autoPlay
-        muted
         onEnded={handleVideoEnd}
         loop={false}
       />

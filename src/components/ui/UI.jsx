@@ -1,5 +1,4 @@
-import React, { useMemo } from 'react';
-
+import React, { useMemo, useEffect } from 'react';
 import styles from './UI.module.scss';
 import classNames from 'classnames';
 import Menu from '../menu/Menu';
@@ -9,9 +8,26 @@ import PlayerSelection from '../player-selection/PlayerSelection';
 import Intro from '../intro/Intro';
 import { AnimatePresence } from 'framer-motion';
 import ProgressBar from '../progress/Progress';
+import { useAudioContext } from '../../provider/AudioProvider';
 
 function UI({ className, ...props }) {
   const { currentPhase } = useGameStateContext();
+  const { playSound, stopSound, setVolume } = useAudioContext();
+
+  useEffect(() => {
+    if (currentPhase === GAME_PHASES.PLAYER_SELECT) {
+      playSound('ambiance', 'menu', true);
+      setVolume('ambiance', 'menu', 0.5);
+    } else if (currentPhase === GAME_PHASES.INTRO) {
+      stopSound('ambiance', 'menu');
+    } else if (currentPhase === GAME_PHASES.GAME) {
+      playSound('ambiance', 'background', true);
+      setVolume('ambiance', 'background', 0.5);
+    } else if (currentPhase === GAME_PHASES.END) {
+      stopSound('ambiance', 'background');
+      playSound('ambiance', 'end');
+    }
+  }, [currentPhase, playSound, stopSound]);
 
   const linkBorder = useMemo(() => {
     if (currentPhase === GAME_PHASES.GAME) {
@@ -29,7 +45,7 @@ function UI({ className, ...props }) {
     >
       <img className={styles.border} src={linkBorder} />
       <AnimatePresence>
-        {currentPhase === GAME_PHASES.MENU && <Menu />}
+        {currentPhase === GAME_PHASES.MENU || (currentPhase === GAME_PHASES.START && <Menu />)}
         {currentPhase === GAME_PHASES.PLAYER_SELECT && <PlayerSelection />}
         {currentPhase === GAME_PHASES.INTRO && <Intro />}
         {currentPhase === GAME_PHASES.GAME && <ProgressBar />}

@@ -3,20 +3,17 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useGameStateContext } from '../provider/GameStateProvider';
 import { useDirectionContext } from '../provider/DirectionProvider';
+import { useAudioContext } from '../provider/AudioProvider';
 
 export function useWaveShooter(bounds) {
-  // Get the target position from the direction provider
   const { chrisMeshPosition } = useDirectionContext();
-  // Get the score from the game state provider
   const { setMissyScore } = useGameStateContext();
+  const { playSound, setVolume } = useAudioContext();
 
-  // Initialize the waves and the time of the next wave
   const [waves, setWaves] = useState([]);
   const nextWaveTimeRef = useRef(0);
-  // Speed and delay of the waves
   const speed = 10;
-  const waveDelay = 500;
-  // Damage of the waves
+  const waveDelay = 350;
   const damage = 1;
 
   // Shoot a wave from the current position
@@ -76,6 +73,11 @@ export function useWaveShooter(bounds) {
           collisions.push({ target, wave });
           target.health -= wave.damage;
           setMissyScore((prevScore) => prevScore + 1);
+          // Alternate between 2 sounds randomly
+          const soundToPlay = Math.random() < 0.5 ? 'wave1' : 'wave2';
+          playSound('actions', soundToPlay);
+          setVolume('actions', soundToPlay, 0.8);
+
           return {
             ...wave,
             hasCollided: true,

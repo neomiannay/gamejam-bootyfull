@@ -6,10 +6,12 @@ import * as THREE from 'three';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { useGameStateContext } from '../provider/GameStateProvider';
 import { missyBounds } from '../utils/constants';
+import { useAudioContext } from '../provider/AudioProvider';
 
 function Cottons() {
   const { chrisMeshPosition } = useDirectionContext();
   const { setChrisScore } = useGameStateContext();
+  const { playSound, setVolume } = useAudioContext();
 
   const [cottons, setCottons] = useState([]);
   const [svgGroup, setSvgGroup] = useState(null); // State for the loaded SVG group
@@ -96,6 +98,8 @@ function Cottons() {
           if (cotton.boundingBox.intersectsBox(target.boundingBox) && !cotton.hasCollided) {
             setChrisScore((prevScore) => prevScore + 1);
             cotton.hasCollided = true; // Mark as collided
+            playSound('actions', 'coton');
+            setVolume('actions', 'coton', 0.8);
           }
 
           return cotton;

@@ -6,18 +6,18 @@ import * as THREE from 'three';
 
 import { useWaveShooter } from './WaveShooter';
 import { useDirectionContext } from '../provider/DirectionProvider';
+import { useAudioContext } from '../provider/AudioProvider';
 
 // Define the bounds for the waves
 export const boundsWaves = { z: 10 };
 
 function Waves() {
-  // Access necessary context and functions from custom hooks
-  const { player2, chrisPosition, chrisMeshPosition, missyMeshPosition } = useDirectionContext();
+  const { playSound } = useAudioContext();
+  const { player2, missyMeshPosition } = useDirectionContext();
   const { waves, checkCollisions, shootWave } = useWaveShooter(boundsWaves);
 
   const [waveSvgs, setWaveSvgs] = useState([]); // Array to store SVG groups for each wave
 
-  // Function to randomly load one of the three SVGs for a wave
   const loadRandomWaveSvg = () => {
     const loader = new SVGLoader();
     const randomWaveIndex = Math.floor(Math.random() * 3) + 1;
@@ -52,6 +52,7 @@ function Waves() {
 
   // Function to handle shooting a wave
   const handleShootWave = async () => {
+    playSound('actions', 'shoot');
     const newWave = {
       x: missyMeshPosition.x,
       y: -0.1,
