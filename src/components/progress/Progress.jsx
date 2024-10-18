@@ -5,15 +5,23 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { baseVariants, pageTransition } from '../../core/animation';
 import Icons from '../icons/Icons';
+import { GAME_PHASES } from '../../utils/constants';
 
 function ProgressBar({ className, ...props }) {
-  const { chrisScore, missyScore, maxPossibleScore, setChrisProgressScore } = useGameStateContext();
+  const {
+    chrisScore,
+    setChrisScore,
+    missyScore,
+    setMissyScore,
+    maxPossibleScore,
+    setChrisProgressScore,
+    setCurrentPhase,
+  } = useGameStateContext();
   const ref = useRef(null);
 
-  // Calculate the progress based on chrisScore and missyScore
   const progressValue = useMemo(() => {
     const totalScore = chrisScore + missyScore;
-    if (totalScore === 0) return 0.5; // Start at the middle if no score
+    if (totalScore === 0) return 0.5;
 
     const chrisProgress = chrisScore / maxPossibleScore;
     const missyProgress = missyScore / maxPossibleScore;
@@ -32,6 +40,15 @@ function ProgressBar({ className, ...props }) {
   useEffect(() => {
     setChrisProgressScore(progressValue);
   }, [progressValue]);
+
+  useEffect(() => {
+    console.log('chrisScore', chrisScore);
+    console.log('missyScore', missyScore);
+
+    if (chrisScore >= maxPossibleScore || missyScore >= maxPossibleScore) {
+      setCurrentPhase(GAME_PHASES.END);
+    }
+  }, [chrisScore, missyScore]);
 
   const ProgressMotif = () => {
     return (

@@ -9,6 +9,7 @@ import Intro from '../intro/Intro';
 import { AnimatePresence } from 'framer-motion';
 import ProgressBar from '../progress/Progress';
 import { useAudioContext } from '../../provider/AudioProvider';
+import EndGame from '../end-game/EndGame';
 
 function UI({ className, ...props }) {
   const { currentPhase } = useGameStateContext();
@@ -49,6 +50,7 @@ function UI({ className, ...props }) {
         {currentPhase === GAME_PHASES.PLAYER_SELECT && <PlayerSelection />}
         {currentPhase === GAME_PHASES.INTRO && <Intro />}
         {currentPhase === GAME_PHASES.GAME && <ProgressBar />}
+        {currentPhase === GAME_PHASES.END && <EndGame />}
       </AnimatePresence>
     </div>
   );

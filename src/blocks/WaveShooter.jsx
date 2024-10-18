@@ -7,7 +7,7 @@ import { useAudioContext } from '../provider/AudioProvider';
 
 export function useWaveShooter(bounds) {
   const { chrisMeshPosition } = useDirectionContext();
-  const { setMissyScore } = useGameStateContext();
+  const { setMissyScore, setChrisScore } = useGameStateContext();
   const { playSound, setVolume } = useAudioContext();
 
   const [waves, setWaves] = useState([]);
@@ -73,6 +73,10 @@ export function useWaveShooter(bounds) {
           collisions.push({ target, wave });
           target.health -= wave.damage;
           setMissyScore((prevScore) => prevScore + 1);
+          setChrisScore((prevScore) => {
+            if (prevScore > 0) return prevScore - 1;
+            return 0;
+          });
           // Alternate between 2 sounds randomly
           const soundToPlay = Math.random() < 0.5 ? 'wave1' : 'wave2';
           playSound('actions', soundToPlay);

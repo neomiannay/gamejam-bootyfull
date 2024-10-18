@@ -73,13 +73,13 @@ function Chris() {
       const rotatedY = x * sinAngle + z * cosAngle;
 
       setChrisPosition((prev) => ({
-        x: prev.x + rotatedX * 10 * delta,
-        z: prev.z - rotatedY * 10 * delta,
+        x: prev.x + rotatedX * 15 * delta,
+        z: prev.z - rotatedY * 15 * delta,
       }));
 
       // Clamping positions
       const clampedX = clamp(meshRef.current.position.x + rotatedX * 10 * delta, -missyBounds, missyBounds);
-      const clampedZ = clamp(meshRef.current.position.z - rotatedY * 10 * delta, 0, 7);
+      const clampedZ = clamp(meshRef.current.position.z - rotatedY * 10 * delta, 0, 6);
 
       meshRef.current.position.x = clampedX;
       meshRef.current.position.z = clampedZ;

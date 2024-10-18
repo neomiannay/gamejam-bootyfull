@@ -10,7 +10,7 @@ import { useAudioContext } from '../provider/AudioProvider';
 
 function Cottons() {
   const { chrisMeshPosition } = useDirectionContext();
-  const { setChrisScore } = useGameStateContext();
+  const { setChrisScore, setMissyScore } = useGameStateContext();
   const { playSound, setVolume } = useAudioContext();
 
   const [cottons, setCottons] = useState([]);
@@ -22,7 +22,7 @@ function Cottons() {
   // Function to spawn a new cotton
   const spawnCotton = () => {
     const newCotton = {
-      x: Math.random() * missyBounds, // Random x position within bounds
+      x: Math.random() * missyBounds * 2 - missyBounds,
       y: -0.1, // Fixed y position
       z: -10, // Start at z = -10
       boundingBox: new THREE.Box3().setFromCenterAndSize(
@@ -66,7 +66,7 @@ function Cottons() {
   useEffect(() => {
     const interval = setInterval(() => {
       spawnCotton();
-    }, 2000); // Spawns every 2 seconds
+    }, 1000); // Spawns every 2 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -97,6 +97,10 @@ function Cottons() {
           // Check for collisions
           if (cotton.boundingBox.intersectsBox(target.boundingBox) && !cotton.hasCollided) {
             setChrisScore((prevScore) => prevScore + 1);
+            setMissyScore((prevScore) => {
+              if (prevScore > 0) return prevScore - 1;
+              return 0;
+            });
             cotton.hasCollided = true; // Mark as collided
             playSound('actions', 'coton');
             setVolume('actions', 'coton', 0.8);

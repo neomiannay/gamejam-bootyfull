@@ -1,0 +1,18 @@
+.wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.skip {
+    position: absolute;
+    width: grid(2, 2);
+    bottom: rem(60);
+    right: rem(60);
+}
