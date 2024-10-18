@@ -121,7 +121,7 @@ function Missy() {
   // Load SVG once on mount
   useEffect(() => {
     const loader = new SVGLoader();
-    loader.load('../../public/images/missy/cursor-missy.svg', (data) => {
+    loader.load('/images/missy/cursor-missy.svg', (data) => {
       const paths = data.paths;
       const group = new THREE.Group();
 

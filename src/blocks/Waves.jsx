@@ -21,7 +21,7 @@ function Waves() {
   const loadRandomWaveSvg = () => {
     const loader = new SVGLoader();
     const randomWaveIndex = Math.floor(Math.random() * 3) + 1;
-    const svgPath = `../../public/images/waves/wave-${randomWaveIndex}.svg`;
+    const svgPath = `/images/waves/wave-${randomWaveIndex}.svg`;
 
     return new Promise((resolve) => {
       loader.load(svgPath, (data) => {

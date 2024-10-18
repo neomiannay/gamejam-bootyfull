@@ -60,13 +60,13 @@ function Chris() {
   // Load SVG once on mount
   useEffect(() => {
     const loader = new SVGLoader();
-    loader.load('../../public/images/chris/tete-4.svg', (data) => {
+    loader.load('/images/chris/tete-4.svg', (data) => {
       const paths = data.paths;
       const group = new THREE.Group();
 
       paths.forEach((path) => {
         const material = new THREE.MeshBasicMaterial({
-          color: path.color || 0xffffff, // Default to white if no color in SVG
+          color: path.color || 0xffffff,
           side: THREE.DoubleSide,
           depthWrite: false,
         });

@@ -3,7 +3,7 @@ import { VideoTexture, DoubleSide } from 'three';
 
 function Hynosis() {
   const video = document.createElement('video');
-  video.src = '../../public/videos/spirale.mp4';
+  video.src = '/video/spirale.mp4';
   video.loop = true;
   video.muted = true;
   video.style.display = 'none'; // Hide the video element
