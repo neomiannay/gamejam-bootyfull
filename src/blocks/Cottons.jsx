@@ -106,13 +106,15 @@ function Cottons() {
   });
 
   return (
-    <>
-      {cottons.map((cotton, index) => (
-        <mesh key={index} position={[cotton.x, cotton.y, cotton.z]}>
-          {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)}
-        </mesh>
-      ))}
-    </>
+    cottons && (
+      <>
+        {cottons.map((cotton, index) => (
+          <mesh key={index} position={[cotton.x, cotton.y, cotton.z]}>
+            {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)}
+          </mesh>
+        ))}
+      </>
+    )
   );
 }
 

@@ -88,13 +88,16 @@ function Waves() {
 
   // Render the waves and their respective SVGs
   return (
-    <>
-      {waves.map((wave, index) => (
-        <mesh key={index} position={[wave.x, wave.y, wave.z]}>
-          {waveSvgs[index] && waveSvgs[index].children.map((child, i) => <primitive object={child.clone()} key={i} />)}
-        </mesh>
-      ))}
-    </>
+    waves && (
+      <>
+        {waves.map((wave, index) => (
+          <mesh key={index} position={[wave.x, wave.y, wave.z]}>
+            {waveSvgs[index] &&
+              waveSvgs[index].children.map((child, i) => <primitive object={child.clone()} key={i} />)}
+          </mesh>
+        ))}
+      </>
+    )
   );
 }
 
