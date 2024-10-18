@@ -14,10 +14,12 @@ function Hynosis() {
   texture.needsUpdate = true;
 
   return (
-    <mesh position={[0, 4, -12]} scale={[0.2, 0.1, 1]}>
-      <planeGeometry args={[100, 100]} />
-      <meshBasicMaterial map={texture} side={DoubleSide} />
-    </mesh>
+    texture && (
+      <mesh position={[0, 4, -12]} scale={[0.2, 0.1, 1]}>
+        <planeGeometry args={[100, 100]} />
+        <meshBasicMaterial map={texture} side={DoubleSide} />
+      </mesh>
+    )
   );
 }
 
