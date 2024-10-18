@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import styles from './PlayerSelection.module.scss';
-import UnderLineText from '../underline-text/UnderLineText';
+import UnderLineText from '../underline-text/UnderLine';
 import Icons from '../icons/Icons';
 import Axis from 'axis-api';
 import PlayerCursor from '../playerCursor/PlayerCursor';

@@ -5,7 +5,7 @@ import { useDirectionContext } from '../../provider/DirectionProvider';
 import { useEffect } from 'react';
 import { GAME_PHASES } from '../../utils/constants';
 import Icons from '../icons/Icons';
-import UnderLineText from '../underline-text/UnderLineText';
+import UnderLineText from '../underline-text/UnderLine';
 import { motion } from 'framer-motion';
 import { baseVariants, pageTransition } from '../../core/animation';
 

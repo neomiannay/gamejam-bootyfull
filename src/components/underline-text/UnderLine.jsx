@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import styles from './UnderLineText.module.scss';
+import styles from './UnderLine.module.scss';
 import Icons from '../icons/Icons';
 
 function UnderLineText({ className, ...props }) {
