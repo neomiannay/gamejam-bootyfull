@@ -14,9 +14,9 @@ function Scene() {
     <>
       <Leva />
       <Loader />
-      {/* <UI />
-      {currentPhase === GAME_PHASES.GAME && <Game />} */}
-      <Game />
+      <UI />
+      {currentPhase === GAME_PHASES.GAME && <Game />}
+      {/* <Game /> */}
     </>
   );
 }
