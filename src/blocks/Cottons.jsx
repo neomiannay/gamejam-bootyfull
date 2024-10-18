@@ -66,7 +66,7 @@ function Cottons() {
   useEffect(() => {
     const interval = setInterval(() => {
       spawnCotton();
-    }, 3000); // Spawns every 3 seconds
+    }, 2000); // Spawns every 2 seconds
 
     return () => clearInterval(interval);
   }, []);
