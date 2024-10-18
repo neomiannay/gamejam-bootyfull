@@ -35,7 +35,7 @@ function Cottons() {
   // Load SVG once on mount
   useEffect(() => {
     const loader = new SVGLoader();
-    loader.load('/public/images/coton.svg', (data) => {
+    loader.load('/images/coton.svg', (data) => {
       const paths = data.paths;
       const group = new THREE.Group();
 
