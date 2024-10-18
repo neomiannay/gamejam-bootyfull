@@ -1,0 +1,22 @@
+.wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 7%;
+    right: 6%;
+}
+
+.wrapperProgress {
+    position: relative;
+    width: 110%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.motif {
+    position: absolute;
+    left: 6%;
+}

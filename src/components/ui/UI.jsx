@@ -8,6 +8,7 @@ import { GAME_PHASES } from '../../utils/constants';
 import PlayerSelection from '../player-selection/PlayerSelection';
 import Intro from '../intro/Intro';
 import { AnimatePresence } from 'framer-motion';
+import ProgressBar from '../progress/Progress';
 
 function UI({ className, ...props }) {
   const { currentPhase } = useGameStateContext();
@@ -31,6 +32,7 @@ function UI({ className, ...props }) {
         {currentPhase === GAME_PHASES.MENU && <Menu />}
         {currentPhase === GAME_PHASES.PLAYER_SELECT && <PlayerSelection />}
         {currentPhase === GAME_PHASES.INTRO && <Intro />}
+        {currentPhase === GAME_PHASES.GAME && <ProgressBar />}
       </AnimatePresence>
     </div>
   );

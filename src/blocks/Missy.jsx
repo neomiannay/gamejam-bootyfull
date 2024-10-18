@@ -5,6 +5,8 @@ import { clamp } from 'lodash';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { missyBounds } from '../utils/constants';
 import { useGameStateContext } from '../provider/GameStateProvider';
+import { SVGLoader } from 'three/examples/jsm/Addons.js';
+import * as THREE from 'three';
 
 function Missy() {
   const meshRef = useRef(null);
@@ -13,6 +15,7 @@ function Missy() {
   const { missyScore } = useGameStateContext();
   const [isRotating, setIsRotation] = useState(false);
   const [accumulatedRotation, setAccumulatedRotation] = useState(0);
+  const [svgGroup, setSvgGroup] = useState(null);
 
   useEffect(() => {
     const joystickMoveHandler = (event) => {
@@ -115,11 +118,38 @@ function Missy() {
   // const clampedX = clamp(meshRef.current.position.x, -missyBounds, missyBounds);
   // meshRef.current.position.x = clampedX;
 
+  // Load SVG once on mount
+  useEffect(() => {
+    const loader = new SVGLoader();
+    loader.load('../../public/images/missy/cursor-missy.svg', (data) => {
+      const paths = data.paths;
+      const group = new THREE.Group();
+
+      paths.forEach((path) => {
+        const material = new THREE.MeshBasicMaterial({
+          color: path.color || 0xffffff, // Default to white if no color in SVG
+          side: THREE.DoubleSide,
+          depthWrite: false,
+        });
+
+        const shapes = SVGLoader.createShapes(path);
+        shapes.forEach((shape) => {
+          const geometry = new THREE.ShapeGeometry(shape);
+          const mesh = new THREE.Mesh(geometry, material);
+          mesh.scale.set(0.04, 0.04, 0.04);
+          mesh.rotateX(Math.PI / 1.8); // Rotate the wave
+          group.add(mesh);
+        });
+      });
+
+      setSvgGroup(group); // Store the group to use it in the cottons
+    });
+  }, []);
+
   return (
     <>
-      <mesh position={[0, 0.2, -10]} ref={meshRef}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="blue" />
+      <mesh position={[0, -0.8, -11]} ref={meshRef}>
+        {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)}
       </mesh>
     </>
   );

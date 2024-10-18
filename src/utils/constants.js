@@ -1,4 +1,4 @@
-export const missyBounds = 4;
+export const missyBounds = 8;
 
 export const GAME_PHASES = {
   MENU: 'MENU',
