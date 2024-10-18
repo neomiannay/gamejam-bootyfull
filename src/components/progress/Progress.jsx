@@ -7,7 +7,7 @@ import { baseVariants, pageTransition } from '../../core/animation';
 import Icons from '../icons/Icons';
 
 function ProgressBar({ className, ...props }) {
-  const { chrisScore, missyScore, maxPossibleScore } = useGameStateContext();
+  const { chrisScore, missyScore, maxPossibleScore, setChrisProgressScore } = useGameStateContext();
   const ref = useRef(null);
 
   // Calculate the progress based on chrisScore and missyScore
@@ -20,12 +20,17 @@ function ProgressBar({ className, ...props }) {
 
     const normalizedProgress = chrisProgress / (chrisProgress + missyProgress);
 
-    return 0.5 + (normalizedProgress - 0.5) * (totalScore / maxPossibleScore);
+    const progress = 0.5 + (normalizedProgress - 0.5) * (totalScore / maxPossibleScore);
+
+    return progress;
   }, [chrisScore, missyScore]);
 
   const progress = useMemo(() => {
-    console.log(progressValue);
     return progressValue;
+  }, [progressValue]);
+
+  useEffect(() => {
+    setChrisProgressScore(progressValue);
   }, [progressValue]);
 
   const ProgressMotif = () => {

@@ -6,11 +6,44 @@ import * as THREE from 'three';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { missyBounds } from '../utils/constants';
 import { Plane } from '@react-three/drei';
+import { useGameStateContext } from '../provider/GameStateProvider';
 
 function Chris() {
   const meshRef = useRef();
   const { chrisPosition, chrisRotation, setChrisPosition, setChrisMeshPosition, controlledByPlayer } =
     useDirectionContext();
+  const { chrisProgressScore } = useGameStateContext();
+
+  const [texturesLoaded, setTexturesLoaded] = useState(false);
+  const textureCache = useRef({}); // Store all preloaded textures
+
+  // Preload all textures
+  useEffect(() => {
+    const manager = new THREE.LoadingManager();
+    const loader = new THREE.TextureLoader(manager);
+
+    // List of textures to preload (adjust as needed)
+    const texturesToLoad = [
+      '/images/chris/tete-1.png',
+      '/images/chris/tete-2.png',
+      '/images/chris/tete-3.png',
+      '/images/chris/tete-4.png',
+      '/images/chris/tete-5.png',
+      '/images/chris/tete-6.png',
+      '/images/chris/tete-7.png',
+      '/images/chris/tete-dos.png', // Back of the head texture
+    ];
+
+    // Load all textures
+    texturesToLoad.forEach((url) => {
+      textureCache.current[url] = loader.load(url);
+    });
+
+    // Set state when all textures are loaded
+    manager.onLoad = () => {
+      setTexturesLoaded(true);
+    };
+  }, []);
 
   // Joystick event handler
   useEffect(() => {
@@ -57,17 +90,44 @@ function Chris() {
     }
   });
 
-  // Head front material with texture
+  // Memoize the front and back materials using preloaded textures
   const headFrontMaterial = useMemo(() => {
-    const texture = new THREE.TextureLoader().load('/images/chris/tete-4.png');
-    return new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, transparent: true });
-  }, []);
+    if (!texturesLoaded) return null;
 
-  // Head back material with texture
+    // Determine which texture to use based on `chrisProgressScore`
+    const textureNumber = Math.floor(chrisProgressScore * 6 + 1);
+    const texturePath = `/images/chris/tete-${textureNumber}.png`;
+    const texture = textureCache.current[texturePath];
+
+    const textureAlternate = () => {
+      if (!texture) {
+        if (chrisProgressScore > 6) {
+          return textureCache.current['/images/chris/tete-7.png'];
+        } else if (chrisProgressScore < 1) {
+          return textureCache.current['/images/chris/tete-1.png'];
+        }
+      }
+    };
+
+    return new THREE.MeshBasicMaterial({
+      map: texture || textureAlternate(),
+      side: THREE.DoubleSide,
+      transparent: true,
+    });
+  }, [chrisProgressScore, texturesLoaded]);
+
   const headBackMaterial = useMemo(() => {
-    const texture = new THREE.TextureLoader().load('/images/chris/tete-dos.png');
-    return new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, flipY: true, transparent: true });
-  }, []);
+    if (!texturesLoaded) return null;
+
+    // Use the back texture
+    const texture = textureCache.current['/images/chris/tete-dos.png'];
+
+    return new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, transparent: true });
+  }, [texturesLoaded]);
+
+  if (!texturesLoaded) {
+    return null;
+  }
 
   return (
     <>

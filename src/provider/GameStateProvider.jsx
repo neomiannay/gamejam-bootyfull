@@ -8,6 +8,8 @@ export function GameStateProvider({ children }) {
   const [currentPhase, setCurrentPhase] = useState(GAME_PHASES.START);
   const [missyScore, setMissyScore] = useState(0);
   const [chrisScore, setChrisScore] = useState(0);
+  const [progressScore, setProgressScore] = useState(0);
+  const [chrisProgressScore, setChrisProgressScore] = useState(0);
 
   const maxPossibleScore = 10;
 
@@ -19,6 +21,10 @@ export function GameStateProvider({ children }) {
     chrisScore,
     setChrisScore,
     maxPossibleScore,
+    progressScore,
+    setProgressScore,
+    chrisProgressScore,
+    setChrisProgressScore,
   };
 
   return <GameStateContext.Provider value={context}>{children}</GameStateContext.Provider>;
