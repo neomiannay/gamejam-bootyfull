@@ -136,7 +136,7 @@ function Missy() {
         shapes.forEach((shape) => {
           const geometry = new THREE.ShapeGeometry(shape);
           const mesh = new THREE.Mesh(geometry, material);
-          mesh.scale.set(0.04, 0.04, 0.04);
+          mesh.scale.set(0.004, 0.004, 0.004);
           mesh.rotateX(Math.PI / 1.8); // Rotate the wave
           group.add(mesh);
         });
