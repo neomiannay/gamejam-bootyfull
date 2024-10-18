@@ -55,7 +55,7 @@ function Waves() {
     const newWave = {
       x: missyMeshPosition.x,
       y: -0.1,
-      z: -10,
+      z: -4,
     };
 
     // Load a random SVG for the new wave

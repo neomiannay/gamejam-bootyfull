@@ -49,7 +49,7 @@ function Chris() {
       meshRef.current.position.x = clampedX;
 
       const computedZ = meshRef.current.position.z;
-      const clampedZ = clamp(computedZ - rotatedY * 10 * delta, -6, 6);
+      const clampedZ = clamp(computedZ - rotatedY * 10 * delta, -6, 7);
       meshRef.current.position.z = clampedZ;
 
       setChrisMeshPosition(meshRef.current.position);
@@ -89,7 +89,7 @@ function Chris() {
 
   return (
     <>
-      <mesh ref={meshRef} position={[0, 0.8, 0]}>
+      <mesh ref={meshRef} position={[0, 0.8, 7]}>
         {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)}
       </mesh>
     </>
