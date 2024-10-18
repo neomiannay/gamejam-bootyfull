@@ -1,20 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Axis from 'axis-api';
 import { useFrame } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
+import { clamp } from 'lodash';
+import * as THREE from 'three';
 import { useDirectionContext } from '../provider/DirectionProvider';
 import { missyBounds } from '../utils/constants';
-import { clamp } from 'lodash';
-import { SVGLoader } from 'three/examples/jsm/Addons.js';
-import * as THREE from 'three';
+import { Plane } from '@react-three/drei';
 
 function Chris() {
   const meshRef = useRef();
   const { chrisPosition, chrisRotation, setChrisPosition, setChrisMeshPosition, controlledByPlayer } =
     useDirectionContext();
 
-  const [svgGroup, setSvgGroup] = useState(null);
-
+  // Joystick event handler
   useEffect(() => {
     const joystick = controlledByPlayer === 2 ? Axis.joystick2 : Axis.joystick1;
     const joystickMoveHandler = (event) => {
@@ -29,6 +27,7 @@ function Chris() {
     };
   }, [controlledByPlayer, setChrisPosition]);
 
+  // Update position and rotation each frame
   useFrame((state, delta) => {
     if (meshRef.current) {
       const { x, z } = chrisPosition;
@@ -36,6 +35,7 @@ function Chris() {
       const cosAngle = Math.cos(angleRotation);
       const sinAngle = Math.sin(angleRotation);
 
+      // Calculate rotated positions
       const rotatedX = x * cosAngle - z * sinAngle;
       const rotatedY = x * sinAngle + z * cosAngle;
 
@@ -44,54 +44,42 @@ function Chris() {
         z: prev.z - rotatedY * 10 * delta,
       }));
 
-      const computedX = meshRef.current.position.x;
-      const clampedX = clamp(computedX + rotatedX * 10 * delta, -missyBounds, missyBounds);
-      meshRef.current.position.x = clampedX;
+      // Clamping positions
+      const clampedX = clamp(meshRef.current.position.x + rotatedX * 10 * delta, -missyBounds, missyBounds);
+      const clampedZ = clamp(meshRef.current.position.z - rotatedY * 10 * delta, 0, 7);
 
-      const computedZ = meshRef.current.position.z;
-      const clampedZ = clamp(computedZ - rotatedY * 10 * delta, -6, 7);
+      meshRef.current.position.x = clampedX;
       meshRef.current.position.z = clampedZ;
 
       setChrisMeshPosition(meshRef.current.position);
+
       meshRef.current.rotation.y = angleRotation;
     }
   });
 
-  // Load SVG once on mount
-  useEffect(() => {
-    const loader = new SVGLoader();
-    loader.load('/images/chris/tete-4.svg', (data) => {
-      const paths = data.paths;
-      const group = new THREE.Group();
+  // Head front material with texture
+  const headFrontMaterial = useMemo(() => {
+    const texture = new THREE.TextureLoader().load('/images/chris/tete-4.png');
+    return new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, transparent: true });
+  }, []);
 
-      paths.forEach((path) => {
-        const material = new THREE.MeshBasicMaterial({
-          color: path.color || 0xffffff,
-          side: THREE.DoubleSide,
-          depthWrite: false,
-        });
-
-        const shapes = SVGLoader.createShapes(path);
-        shapes.forEach((shape) => {
-          const geometry = new THREE.ShapeGeometry(shape);
-          const mesh = new THREE.Mesh(geometry, material);
-          mesh.scale.set(0.02, 0.02, 0.02);
-          mesh.rotateZ(-Math.PI);
-          mesh.rotateX(Math.PI / 6);
-
-          group.add(mesh);
-        });
-      });
-
-      setSvgGroup(group); // Store the group to use it in the cottons
-    });
+  // Head back material with texture
+  const headBackMaterial = useMemo(() => {
+    const texture = new THREE.TextureLoader().load('/images/chris/tete-dos.png');
+    return new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, flipY: true, transparent: true });
   }, []);
 
   return (
     <>
-      <mesh ref={meshRef} position={[0, 0.8, 7]}>
-        {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)}
-      </mesh>
+      <group ref={meshRef} position={[0, 0.8, 7]} rotation={[-0.3, 0, 0]}>
+        <mesh scale={[1.5, 1.5, 1.5]}>
+          <Plane args={[1, 1]} material={headFrontMaterial} />
+        </mesh>
+
+        <mesh scale={[1.5, 1.5, 1.5]} position={[0, 0, -0.02]}>
+          <Plane args={[1, 1]} material={headBackMaterial} />
+        </mesh>
+      </group>
     </>
   );
 }
