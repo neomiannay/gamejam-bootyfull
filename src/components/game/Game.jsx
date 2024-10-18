@@ -11,7 +11,7 @@ import Hynosis from '../../blocks/Hynosis';
 function Game() {
   return (
     <Canvas className="canvas" shadows camera={{ position: [0, 6, 12.5], fov: 70 }}>
-      <Perf position="bottom-right" />
+      {/* <Perf position="bottom-right" /> */}
       <color attach="background" args={['#000000']} />
       <Suspense fallback={null}>
         <ambientLight intensity={1} />
