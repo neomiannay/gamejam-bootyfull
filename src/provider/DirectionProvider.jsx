@@ -23,7 +23,7 @@ export function DirectionProvider({ children }) {
   Axis.registerKeys('w', 'w', 2);
 
   Axis.joystick1.setGamepadEmulatorJoystick(gamepadEmulator1, 0);
-  Axis.joystick2.setGamepadEmulatorJoystick(gamepadEmulator1, 1);
+  Axis.joystick2.setGamepadEmulatorJoystick(gamepadEmulator2, 1);
 
   const buttonsPlayer1 = [
     Axis.registerKeys('z', 'i', 1),
