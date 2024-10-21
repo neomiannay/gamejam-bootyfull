@@ -17,12 +17,12 @@ import { Plane } from '@react-three/drei';
 import { useGameStateContext } from '../provider/GameStateProvider';
 
 function Chris() {
-  const meshRef = useRef();
   const { chrisPosition, chrisRotation, setChrisPosition, setChrisMeshPosition, controlledByPlayer } =
     useDirectionContext();
   const { chrisProgressScore } = useGameStateContext();
-
   const [texturesLoaded, setTexturesLoaded] = useState(false);
+
+  const meshRef = useRef();
   const textureCache = useRef({}); // Store all preloaded textures
 
   // Preload all textures

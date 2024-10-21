@@ -1,22 +1,20 @@
+/**
+ * Ce fichier a vraiment été fait à la fin donc niveau dev et implémentation des svg c'est vrmt pas trop ça
+ * J pense que y a pas mal de chose à revoir là dessus + c'est pas vraiment iso avec la maquette
+ * On a juste un clip path qui bouge en fonction des points des joueurs, mais en design la maquette de cette éléments là est un peu plus détaillée
+ */
+
 import classNames from 'classnames';
 import styles from './Progress.module.scss';
 import { useGameStateContext } from '../../provider/GameStateProvider';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { baseVariants, pageTransition } from '../../core/animation';
 import Icons from '../icons/Icons';
 import { GAME_PHASES } from '../../utils/constants';
 
 function ProgressBar({ className, ...props }) {
-  const {
-    chrisScore,
-    setChrisScore,
-    missyScore,
-    setMissyScore,
-    maxPossibleScore,
-    setChrisProgressScore,
-    setCurrentPhase,
-  } = useGameStateContext();
+  const { chrisScore, missyScore, maxPossibleScore, setChrisProgressScore, setCurrentPhase } = useGameStateContext();
   const ref = useRef(null);
 
   const progressValue = useMemo(() => {
@@ -67,6 +65,7 @@ function ProgressBar({ className, ...props }) {
       style={{ '--progress': progress }}
       {...baseVariants}
       {...pageTransition}
+      {...props}
     >
       <div className={classNames(styles.wrapperProgress, className)}>
         <Icons id="missy_initial" />

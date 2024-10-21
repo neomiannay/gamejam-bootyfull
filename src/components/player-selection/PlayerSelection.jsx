@@ -21,6 +21,7 @@ function PlayerSelection({ className, ...props }) {
 
   const handleJoystickMove = (setSelectedPlayer) => (event) => {
     // not working correctly
+    // j pense j'ai pas la logique du truc pour que ça marche bien
     const { x } = event.position;
 
     if (Math.abs(x) > joystickThreshold) {

@@ -17,20 +17,6 @@ function Game() {
         <ambientLight intensity={1} />
         <OrbitControls />
 
-        {/* <Grid
-            args={[5, 5]}
-            cellSize={0.5}
-            cellThickness={1}
-            cellColor={'#76492b'}
-            sectionSize={2}
-            sectionThickness={1.5}
-            sectionColor={'#523622'}
-            fadeDistance={50}
-            fadeStrength={0.5}
-            followCamera={false}
-            infiniteGrid
-          /> */}
-
         <Missy />
         <Chris />
 

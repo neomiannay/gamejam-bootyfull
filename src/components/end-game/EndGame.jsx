@@ -1,3 +1,8 @@
+/**
+ * Il faut reset la rotation de Chris également car quand tu restard la game c'est pas reset
+ * à voir s'il faut reset de nouvelles choses
+ */
+
 import { motion } from 'framer-motion';
 import styles from './EndGame.module.scss';
 import { baseVariants, pageTransition } from '../../core/animation';

@@ -17,13 +17,12 @@ import { SVGLoader } from 'three/examples/jsm/Addons.js';
 import * as THREE from 'three';
 
 function Missy() {
-  const meshRef = useRef(null);
   const { direction, player2, missyPosition, setMissyPosition, setChrisRotation, setMissyMeshPosition } =
     useDirectionContext();
-  const { missyScore } = useGameStateContext();
   const [isRotating, setIsRotation] = useState(false);
   const [accumulatedRotation, setAccumulatedRotation] = useState(0);
   const [svgGroup, setSvgGroup] = useState(null);
+  const meshRef = useRef(null);
 
   useEffect(() => {
     const joystickMoveHandler = (event) => {
@@ -88,18 +87,20 @@ function Missy() {
       const computedX = meshRef.current.position.x;
       const clampedX = clamp(computedX + xMissy * 10 * delta, -missyBounds, missyBounds);
       meshRef.current.position.x = clampedX;
-      setMissyMeshPosition(meshRef.current.position);
+      setMissyMeshPosition(meshRef.current.position); // Store the position to use it in the waves file
     }
 
     const joystickRotationValue = xMissy;
 
     if (isRotating) {
+      // Rotate chris when the x key is pressed and the joystick is moved
       setAccumulatedRotation((prevRotation) => prevRotation + joystickRotationValue * delta * 3);
 
       const angleRotation = accumulatedRotation;
       setChrisRotation(angleRotation);
     }
 
+    // Move Missy with the joystick when the x key is not pressed and the joystick is moved (no rotation) between the bounds
     const { x: xKB, y: yKB } = direction;
     const computedX = meshRef.current.position.x;
     const clampedX = clamp(computedX + xKB * 10 * delta, -missyBounds, missyBounds);
