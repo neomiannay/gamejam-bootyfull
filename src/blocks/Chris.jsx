@@ -1,3 +1,11 @@
+/**
+ * Chris Component
+ *
+ * This component manages the behavior and appearance of the character "Chris" within the game.
+ * It handles Chris's movement, rotation, and texture updates based on the player's joystick input
+ * and game progress.
+ */
+
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Axis from 'axis-api';
 import { useFrame } from '@react-three/fiber';

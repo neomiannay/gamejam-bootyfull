@@ -1,3 +1,11 @@
+/**
+ * Cottons Component
+ *
+ * This component is responsible for rendering and animating "Cottons," which are projectiles that spawn at random
+ * positions and move forward to potentially collide with the opposing player (Chris).
+ * Each cotton is represented by an SVG that is dynamically loaded and added to the scene.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';

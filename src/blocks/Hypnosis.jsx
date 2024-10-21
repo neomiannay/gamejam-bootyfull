@@ -1,7 +1,15 @@
+/**
+ * Hypnosis Component
+ *
+ * This component renders a video texture of a spiraling animation on a plane in the scene.
+ * The video file (`/video/spirale.mp4`) is used to create a looping, muted video texture
+ * that is applied to a 3D plane geometry.
+ */
+
 import React from 'react';
 import { VideoTexture, DoubleSide } from 'three';
 
-function Hynosis() {
+function Hypnosis() {
   const video = document.createElement('video');
   video.src = '/video/spirale.mp4';
   video.loop = true;
@@ -23,4 +31,4 @@ function Hynosis() {
   );
 }
 
-export default React.memo(Hynosis);
+export default React.memo(Hypnosis);

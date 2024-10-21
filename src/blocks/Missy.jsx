@@ -1,3 +1,11 @@
+/**
+ * Missy Component
+ *
+ * This component manages the behavior and appearance of the character "Missy" within the game.
+ * It handles Missy's movement, rotation, and texture updates based on the player's joystick input
+ * and game progress.
+ */
+
 import React, { useEffect, useRef, useState } from 'react';
 import Axis from 'axis-api';
 import { useFrame } from '@react-three/fiber';

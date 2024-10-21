@@ -6,7 +6,7 @@ import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
 import Waves from '../../blocks/Waves';
 import Cottons from '../../blocks/Cottons';
-import Hynosis from '../../blocks/Hynosis';
+import Hypnosis from '../../blocks/Hypnosis';
 
 function Game() {
   return (
@@ -38,7 +38,7 @@ function Game() {
 
         <Cottons />
 
-        <Hynosis />
+        <Hypnosis />
       </Suspense>
     </Canvas>
   );

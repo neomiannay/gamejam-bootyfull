@@ -1,4 +1,10 @@
-// This component manages the rendering and behavior of waves shot by Missy
+/**
+ * Waves Component
+ *
+ * This component is responsible for rendering and animating the "Waves" that are shot by the player (Missy).
+ * Each wave is loaded dynamically as an SVG and rendered in the 3D scene as it travels forward.
+ */
+
 import React, { useEffect, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'; // Correct import path
@@ -82,10 +88,30 @@ function Waves() {
     };
   }, [missyMeshPosition]);
 
+  // Update the SVGs for each wave on each frame
+  const updateWaves = (delta) => {
+    if (waveSvgs) {
+      waveSvgs.forEach((svgGroup, index) => {
+        svgGroup.children.forEach((child, i) => {
+          const wave = waves[index];
+          if (wave) {
+            // Rotate the wave on the z axis
+            child.rotation.z += wave.speed * delta;
+          }
+        });
+      });
+    }
+  };
+
   // Check for collisions and update wave positions on each frame
   useFrame((state, delta) => {
     checkCollisions();
   });
+
+  // Update the waveSvgs array when the waves array is updated
+  useEffect(() => {
+    setWaveSvgs((prev) => prev.slice(0, waves.length));
+  }, [waves]);
 
   // Render the waves and their respective SVGs
   return (

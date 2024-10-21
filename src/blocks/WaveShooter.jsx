@@ -1,3 +1,10 @@
+/**
+ * WaveShooter Hook (useWaveShooter)
+ *
+ * This custom hook manages the lifecycle of waves shot by Missy. It handles wave creation, movement, collision detection,
+ * and removal after the wave travels out of bounds or collides with a target.
+ */
+
 import React, { useState, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
