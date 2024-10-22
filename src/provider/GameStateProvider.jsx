@@ -24,7 +24,7 @@ export function GameStateProvider({ children }) {
     progressScore,
     setProgressScore,
     chrisProgressScore,
-    setChrisProgressScore,
+    setChrisProgressScore
   };
 
   return <GameStateContext.Provider value={context}>{children}</GameStateContext.Provider>;
