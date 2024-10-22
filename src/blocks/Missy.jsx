@@ -14,6 +14,7 @@ import { useDirectionContext } from '../provider/DirectionProvider';
 import { missyBounds } from '../utils/constants';
 import { useGameStateContext } from '../provider/GameStateProvider';
 import { SVGLoader } from 'three/examples/jsm/Addons.js';
+import Hypnosis from './Hypnosis';
 import * as THREE from 'three';
 
 function Missy() {
@@ -111,8 +112,13 @@ function Missy() {
   return (
     <>
       <mesh position={[0, -0.8, -11]} ref={meshRef}>
-        {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)}
+        {/* {svgGroup && svgGroup.children.map((child, i) => <primitive object={child.clone()} key={i} />)} */}
       </mesh>
+      <Hypnosis />
+      <mesh position={[0, -0.8, 0]}>
+        <boxGeometry args={[5,4, 15]} position={[0, 0, 3]}/>
+        <meshBasicMaterial/>
+      </mesh >
     </>
   );
 }

@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { VideoTexture, DoubleSide } from 'three';
+import { VideoTexture, DoubleSide, Vector2 } from 'three';
 
 function Hypnosis() {
   const video = document.createElement('video');
@@ -20,11 +20,15 @@ function Hypnosis() {
   video.play();
   const texture = new VideoTexture(video);
   texture.needsUpdate = true;
+  // scale x2 horizontal
+texture.repeat.set(0.5, 1);
+// scale x2 vertical
+texture.repeat.set(1, 0.5);
 
   return (
     texture && (
       <mesh>
-        <planeGeometry args={[100, 100]} />
+        <circleGeometry args={[8, 10]} />
         <meshBasicMaterial map={texture} side={DoubleSide} />
       </mesh>
     )

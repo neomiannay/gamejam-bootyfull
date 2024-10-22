@@ -18,13 +18,9 @@ const BackgroundMaterial = shaderMaterial(
 
 extend({BackgroundMaterial})
 
-
-
 const Background = () => {
 
     const {viewport} = useThree()
-
-
   return (
     <mesh
         rotation-x={Math.PI*-0.5}
