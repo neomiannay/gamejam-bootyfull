@@ -39,7 +39,7 @@ function Chris() {
       '/images/chris/tete-5.png',
       '/images/chris/tete-6.png',
       '/images/chris/tete-7.png',
-      '/images/chris/tete-dos.png', // Back of the head texture
+      '/images/chris/tete-dos.png'
     ];
 
     // Load all textures
@@ -65,8 +65,8 @@ function Chris() {
 
     return () => {
       joystick.removeEventListener('joystick:move', joystickMoveHandler);
-    };
-  }, [controlledByPlayer, setChrisPosition]);
+    }
+  }, [controlledByPlayer, setChrisPosition])
 
   // Update position and rotation each frame
   useFrame((state, delta) => {
