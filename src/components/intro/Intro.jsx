@@ -11,11 +11,12 @@ import { baseVariants, pageTransition } from '../../core/animation';
 
 function Intro({ className, ...props }) {
   const { player1, player2 } = useDirectionContext();
-  const { setCurrentPhase } = useGameStateContext();
+  const { setCurrentPhase, setTutorialActive } = useGameStateContext();
 
   const handlePhaseEnd = (event) => {
     if (event.key === 'a') {
       setCurrentPhase(GAME_PHASES.GAME);
+      setTutorialActive(true)
     }
   };
   useEffect(() => {
@@ -30,6 +31,7 @@ function Intro({ className, ...props }) {
 
   const handleVideoEnd = () => {
     setCurrentPhase(GAME_PHASES.GAME);
+    setTutorialActive(true)
   };
 
   return (

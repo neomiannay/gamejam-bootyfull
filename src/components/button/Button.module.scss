@@ -1,0 +1,17 @@
+.wrapper {
+    width: rem(140);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: rem(16);
+    background-image: url("/images/ui/arrow-button-background.svg");
+    background-position: center;
+    background-size: 100%;
+    color: #000;
+
+    p {
+        font-size: rem(28);
+    }
+}
+
+
