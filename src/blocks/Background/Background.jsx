@@ -27,8 +27,7 @@ const Background = () => {
 
   return (
     <mesh
-        rotation-x={Math.PI*-0.5}
-        position-y={-0.2}
+        position-z={-0.2}
     >
         <planeGeometry args={[viewport.width,viewport.height]}/>
         <backgroundMaterial 

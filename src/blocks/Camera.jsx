@@ -1,4 +1,4 @@
-import { OrthographicCamera } from '@react-three/drei'
+import { OrthographicCamera, PerspectiveCamera } from '@react-three/drei'
 import React, { useEffect, useRef } from 'react'
 
 const Camera = () => {
@@ -11,7 +11,7 @@ const Camera = () => {
 
 
   return (
-    <OrthographicCamera
+    <PerspectiveCamera
       ref={camera}
       makeDefault
       position={[0, 0, 5]}
