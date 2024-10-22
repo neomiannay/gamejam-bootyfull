@@ -1,4 +1,6 @@
+
 import { OrthographicCamera, PerspectiveCamera } from '@react-three/drei'
+
 import React, { useEffect, useRef } from 'react'
 
 const Camera = () => {
@@ -14,7 +16,7 @@ const Camera = () => {
     <PerspectiveCamera
       ref={camera}
       makeDefault
-      position={[0, 0, 5]}
+      position={[0, 0, 30]}
     />
   )
 }
