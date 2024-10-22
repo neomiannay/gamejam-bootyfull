@@ -23,7 +23,7 @@ function Hypnosis() {
 
   return (
     texture && (
-      <mesh position={[0, 4, -12]} scale={[0.2, 0.1, 1]}>
+      <mesh>
         <planeGeometry args={[100, 100]} />
         <meshBasicMaterial map={texture} side={DoubleSide} />
       </mesh>
